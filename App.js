@@ -1,4 +1,4 @@
-const finalAppJS = `const { useState, useEffect } = React;
+const { useState, useEffect } = React;
 
 const COMMITTEES = [
   { 
@@ -55,7 +55,279 @@ const COMMITTEES = [
       'إعداد تقرير ختامي لكل ما تم إنجازه في نهاية كل فصل دراسي'
     ]
   },
-  // ... يتم إضافة بقية اللجان هنا بنفس التنسيق
+  { 
+    name: 'لجنة تطوير المناهج - ماجستير القراءات', 
+    points: 4, 
+    members: 2,
+    mainTask: 'تطوير ومتابعة البرنامج الأكاديمي لماجستير القراءات ومواءمته مع معايير الجودة ومتطلبات سوق العمل والبحث العلمي',
+    tasks: [
+      'متابعة وتطوير الخطط الدراسية دورياً بحيث تكون مواكبة للتطور العلمي ومتطلبات سوق العمل',
+      'متابعة إعداد وتنفيذ واعتماد توصيفات المقررات وتوصيفات البرنامج',
+      'التنسيق مع لجنة الدراسات العليا والبحث العلمي فيما يخص الرسائل العلمية',
+      'مراجعة ومتابعة مسارات البرنامج (مسار الرسالة/المشروع البحثي)',
+      'متابعة جودة الرسائل العلمية المنجزة في البرنامج'
+    ]
+  },
+  { 
+    name: 'لجنة تطوير المناهج - ماجستير الدراسات القرآنية المعاصرة', 
+    points: 4, 
+    members: 2,
+    mainTask: 'تطوير ومتابعة البرنامج الأكاديمي لماجستير الدراسات القرآنية المعاصرة ومواءمته مع معايير الجودة ومتطلبات سوق العمل والبحث',
+    tasks: [
+      'متابعة وتطوير الخطط الدراسية دورياً بحيث تكون مواكبة للتطور العلمي ومتطلبات سوق العمل',
+      'متابعة إعداد وتنفيذ واعتماد توصيفات المقررات وتوصيفات البرنامج',
+      'التنسيق مع لجنة الدراسات العليا والبحث العلمي فيما يخص الرسائل العلمية',
+      'مراجعة ومتابعة مسارات البرنامج (مسار الرسالة/المشروع البحثي)',
+      'متابعة جودة الرسائل العلمية المنجزة في البرنامج'
+    ]
+  },
+  { 
+    name: 'لجنة تطوير المناهج - دكتوراه القراءات', 
+    points: 4, 
+    members: 2,
+    mainTask: 'تطوير ومتابعة البرنامج الأكاديمي لدكتوراه القراءات ومواءمته مع معايير الجودة ومتطلبات البحث العلمي المتقدم',
+    tasks: [
+      'متابعة وتطوير الخطط الدراسية دورياً بحيث تكون مواكبة للتطور العلمي',
+      'متابعة إعداد وتنفيذ واعتماد توصيفات المقررات وتوصيفات البرنامج',
+      'متابعة الاختبار الشامل للدكتوراه والتنسيق مع اللجنة المختصة',
+      'مراجعة مقررات البرنامج التمهيدية والتخصصية',
+      'ضمان جودة الرسائل العلمية وتوافقها مع المعايير الدولية',
+      'تطوير آليات القبول ومعايير الاختبار الشامل'
+    ]
+  },
+  { 
+    name: 'لجنة تطوير المناهج - دكتوراه الدراسات القرآنية', 
+    points: 4, 
+    members: 2,
+    mainTask: 'تطوير ومتابعة البرنامج الأكاديمي لدكتوراه الدراسات القرآنية ومواءمته مع معايير الجودة ومتطلبات البحث العلمي المتقدم',
+    tasks: [
+      'متابعة وتطوير الخطط الدراسية دورياً بحيث تكون مواكبة للتطور العلمي',
+      'متابعة إعداد وتنفيذ واعتماد توصيفات المقررات وتوصيفات البرنامج',
+      'متابعة الاختبار الشامل للدكتوراه والتنسيق مع اللجنة المختصة',
+      'مراجعة مقررات البرنامج التمهيدية والتخصصية',
+      'ضمان جودة الرسائل العلمية وتوافقها مع المعايير الدولية',
+      'تطوير آليات القبول ومعايير الاختبار الشامل'
+    ]
+  },
+  { 
+    name: 'لجنة الجودة والاعتماد - بكالوريوس القرآن وعلومه', 
+    points: 10, 
+    members: 2,
+    mainTask: 'ضمان جودة البرنامج ومتابعة تطبيق معايير الاعتماد الأكاديمي والتحسين المستمر (برنامج قبل الاعتماد الأولي)',
+    tasks: [
+      'رسم السياسات العامة لضمان الجودة في البرنامج والإشراف على تنفيذها',
+      'رسم وإقرار السياسة العامة لنشر ثقافة الجودة بين منسوبي البرنامج',
+      'دعم ومساندة الجهود المبذولة لتطبيق الجودة في البرنامج',
+      'اقتراح برامج لتحفيز ومكافأة المتميزين في تطبيق الجودة',
+      'إقرار التقرير السنوي للبرنامج',
+      'تكريس مفهوم الجودة ونشر ثقافتها على مستوى البرنامج',
+      'متابعة نتائج تقويم الأداء في البرنامج',
+      'متابعة عمليات تنفيذ برنامج التقويم والاعتماد الأكاديمي',
+      'متابعة إعداد وتنفيذ الخطط التطويرية والاستراتيجية للبرنامج',
+      'تحديد الاحتياجات التدريبية المتخصصة لأعضاء هيئة التدريس',
+      'حث وتشجيع أعضاء هيئة التدريس على المشاركة في الدورات التدريبية',
+      'ما يحال إليها من مواضيع ذات اختصاص بالتطوير والجودة',
+      'إعداد التقرير السنوي للبرنامج وفق معايير NCAAA',
+      'متابعة مؤشرات الأداء الرئيسية (KPIs) للبرنامج',
+      'إعداد خطط التحسين بناء على نتائج التقويم والمراجعة',
+      'التحضير لزيارات المراجعة الخارجية والاعتماد الأكاديمي'
+    ]
+  },
+  { 
+    name: 'لجنة الجودة والاعتماد - ماجستير القراءات', 
+    points: 10, 
+    members: 3,
+    mainTask: 'ضمان جودة البرنامج ومتابعة تطبيق معايير الاعتماد الأكاديمي والتحسين المستمر (برنامج قبل الاعتماد الأولي)',
+    tasks: [
+      'رسم السياسات العامة لضمان الجودة في البرنامج والإشراف على تنفيذها',
+      'رسم وإقرار السياسة العامة لنشر ثقافة الجودة بين منسوبي البرنامج',
+      'دعم ومساندة الجهود المبذولة لتطبيق الجودة في البرنامج',
+      'اقتراح برامج لتحفيز ومكافأة المتميزين في تطبيق الجودة',
+      'إقرار التقرير السنوي للبرنامج',
+      'تكريس مفهوم الجودة ونشر ثقافتها على مستوى البرنامج',
+      'متابعة نتائج تقويم الأداء في البرنامج',
+      'متابعة عمليات تنفيذ برنامج التقويم والاعتماد الأكاديمي',
+      'متابعة إعداد وتنفيذ الخطط التطويرية والاستراتيجية للبرنامج',
+      'تحديد الاحتياجات التدريبية المتخصصة لأعضاء هيئة التدريس',
+      'حث وتشجيع أعضاء هيئة التدريس على المشاركة في الدورات التدريبية',
+      'ما يحال إليها من مواضيع ذات اختصاص بالتطوير والجودة',
+      'إعداد التقرير السنوي للبرنامج وفق معايير NCAAA',
+      'متابعة مؤشرات الأداء الرئيسية (KPIs) للبرنامج',
+      'إعداد خطط التحسين بناء على نتائج التقويم والمراجعة',
+      'التحضير لزيارات المراجعة الخارجية والاعتماد الأكاديمي'
+    ]
+  },
+  { 
+    name: 'لجنة الجودة والاعتماد - ماجستير الدراسات القرآنية المعاصرة', 
+    points: 10, 
+    members: 3,
+    mainTask: 'ضمان جودة البرنامج ومتابعة تطبيق معايير الاعتماد الأكاديمي والتحسين المستمر (برنامج قبل الاعتماد الأولي)',
+    tasks: [
+      'رسم السياسات العامة لضمان الجودة في البرنامج والإشراف على تنفيذها',
+      'رسم وإقرار السياسة العامة لنشر ثقافة الجودة بين منسوبي البرنامج',
+      'دعم ومساندة الجهود المبذولة لتطبيق الجودة في البرنامج',
+      'اقتراح برامج لتحفيز ومكافأة المتميزين في تطبيق الجودة',
+      'إقرار التقرير السنوي للبرنامج',
+      'تكريس مفهوم الجودة ونشر ثقافتها على مستوى البرنامج',
+      'متابعة نتائج تقويم الأداء في البرنامج',
+      'متابعة عمليات تنفيذ برنامج التقويم والاعتماد الأكاديمي',
+      'متابعة إعداد وتنفيذ الخطط التطويرية والاستراتيجية للبرنامج',
+      'تحديد الاحتياجات التدريبية المتخصصة لأعضاء هيئة التدريس',
+      'حث وتشجيع أعضاء هيئة التدريس على المشاركة في الدورات التدريبية',
+      'ما يحال إليها من مواضيع ذات اختصاص بالتطوير والجودة',
+      'إعداد التقرير السنوي للبرنامج وفق معايير NCAAA',
+      'متابعة مؤشرات الأداء الرئيسية (KPIs) للبرنامج',
+      'إعداد خطط التحسين بناء على نتائج التقويم والمراجعة',
+      'التحضير لزيارات المراجعة الخارجية والاعتماد الأكاديمي'
+    ]
+  },
+  { 
+    name: 'لجنة الجودة والاعتماد - دكتوراه القراءات', 
+    points: 10, 
+    members: 2,
+    mainTask: 'ضمان جودة البرنامج ومتابعة تطبيق معايير الاعتماد الأكاديمي والتحسين المستمر (برنامج قبل الاعتماد الأولي)',
+    tasks: [
+      'رسم السياسات العامة لضمان الجودة في البرنامج والإشراف على تنفيذها',
+      'رسم وإقرار السياسة العامة لنشر ثقافة الجودة بين منسوبي البرنامج',
+      'دعم ومساندة الجهود المبذولة لتطبيق الجودة في البرنامج',
+      'اقتراح برامج لتحفيز ومكافأة المتميزين في تطبيق الجودة',
+      'إقرار التقرير السنوي للبرنامج',
+      'تكريس مفهوم الجودة ونشر ثقافتها على مستوى البرنامج',
+      'متابعة نتائج تقويم الأداء في البرنامج',
+      'متابعة عمليات تنفيذ برنامج التقويم والاعتماد الأكاديمي',
+      'متابعة إعداد وتنفيذ الخطط التطويرية والاستراتيجية للبرنامج',
+      'تحديد الاحتياجات التدريبية المتخصصة لأعضاء هيئة التدريس',
+      'حث وتشجيع أعضاء هيئة التدريس على المشاركة في الدورات التدريبية',
+      'ما يحال إليها من مواضيع ذات اختصاص بالتطوير والجودة',
+      'إعداد التقرير السنوي للبرنامج وفق معايير NCAAA',
+      'متابعة مؤشرات الأداء الرئيسية (KPIs) للبرنامج',
+      'إعداد خطط التحسين بناء على نتائج التقويم والمراجعة',
+      'التحضير لزيارات المراجعة الخارجية والاعتماد الأكاديمي'
+    ]
+  },
+  { 
+    name: 'لجنة الجودة والاعتماد - دكتوراه الدراسات القرآنية', 
+    points: 10, 
+    members: 2,
+    mainTask: 'ضمان جودة البرنامج ومتابعة تطبيق معايير الاعتماد الأكاديمي والتحسين المستمر (برنامج قبل الاعتماد الأولي)',
+    tasks: [
+      'رسم السياسات العامة لضمان الجودة في البرنامج والإشراف على تنفيذها',
+      'رسم وإقرار السياسة العامة لنشر ثقافة الجودة بين منسوبي البرنامج',
+      'دعم ومساندة الجهود المبذولة لتطبيق الجودة في البرنامج',
+      'اقتراح برامج لتحفيز ومكافأة المتميزين في تطبيق الجودة',
+      'إقرار التقرير السنوي للبرنامج',
+      'تكريس مفهوم الجودة ونشر ثقافتها على مستوى البرنامج',
+      'متابعة نتائج تقويم الأداء في البرنامج',
+      'متابعة عمليات تنفيذ برنامج التقويم والاعتماد الأكاديمي',
+      'متابعة إعداد وتنفيذ الخطط التطويرية والاستراتيجية للبرنامج',
+      'تحديد الاحتياجات التدريبية المتخصصة لأعضاء هيئة التدريس',
+      'حث وتشجيع أعضاء هيئة التدريس على المشاركة في الدورات التدريبية',
+      'ما يحال إليها من مواضيع ذات اختصاص بالتطوير والجودة',
+      'إعداد التقرير السنوي للبرنامج وفق معايير NCAAA',
+      'متابعة مؤشرات الأداء الرئيسية (KPIs) للبرنامج',
+      'إعداد خطط التحسين بناء على نتائج التقويم والمراجعة',
+      'التحضير لزيارات المراجعة الخارجية والاعتماد الأكاديمي'
+    ]
+  },
+  { 
+    name: 'لجنة الجودة والاعتماد - بكالوريوس القراءات', 
+    points: 4, 
+    members: 2,
+    mainTask: 'ضمان استمرارية الجودة ومتابعة تطبيق معايير الاعتماد الأكاديمي (برنامج معتمد - متابعة دورية)',
+    tasks: [
+      'متابعة تطبيق معايير الجودة في البرنامج',
+      'إعداد التقرير السنوي للبرنامج',
+      'متابعة مؤشرات الأداء الرئيسية للبرنامج',
+      'مراجعة خطط التحسين المستمر',
+      'متابعة تنفيذ خطط التحسين السابقة',
+      'جمع وتحليل استبيانات الرضا',
+      'متابعة الملاحظات والتوصيات من المراجعة الخارجية السابقة',
+      'التحضير لزيارات المتابعة الدورية',
+      'تحديث الأدلة والوثائق حسب الحاجة',
+      'إعداد تقرير فصلي مختصر عن حالة البرنامج'
+    ]
+  },
+  { 
+    name: 'لجنة الإرشاد الأكاديمي والمعادلات', 
+    points: 4, 
+    members: 2,
+    mainTask: 'توفير الإرشاد الأكاديمي الفعال لجميع طلاب القسم (6 برامج) ومعالجة طلبات المعادلات',
+    tasks: [
+      'إعداد دليل للإرشاد يحتوي على خطة الإرشاد والنماذج المعتمدة',
+      'إعداد خطة لللإرشاد ورسم سياسات الإرشاد بجميع مجالاته (أكاديمي ومهني ونفسي)',
+      'إعداد ورش إعداد معايير وشروط قبول الطلبة وتسجيلهم بالبرنامج',
+      'متابعة سير عملية الإرشاد الأكاديمي ومتابعة التقدم الدراسي للطلبة',
+      'إعداد وتطبيق منظومة اتصال فاعلة بالطلبة لتسهيل التواصل',
+      'اقتراح وتطبيق آليات للتعرف على الطلبة الموهوبين والمتعثرين',
+      'النظر والدراسة والفصل في شكاوى الطلبة وملاحظاتهم',
+      'تأهيل الطلبة لسوق العمل بالتنسيق مع أرباب العمل',
+      'عقد المبادرات الوقائية والعلاجية للقضاء على الظواهر السلبية',
+      'الالتزام بالنماذج والتقارير المعتمدة من إدارة الإرشاد الجامعي',
+      'إعداد قاعدة بيانات للخريجين ووضع منظومة اتصال فاعلة بهم',
+      'بناء قواعد بيانات للجهات ذات العلاقة بالخريجين',
+      'المشاركة في يوم المهنة لتحقيق التواصل بين الخريجين ومؤسسات المجتمع',
+      'إعداد خطة فعاليات وأنشطة لتدريب وتأهيل الخريجين',
+      'دراسة ومعالجة طلبات المعادلات للمقررات',
+      'إعداد تقرير إنجاز في نهاية كل فصل دراسي'
+    ]
+  },
+  { 
+    name: 'لجنة الاختبارات والنتائج', 
+    points: 2, 
+    members: 2,
+    mainTask: 'الإشراف على تنظيم وتنفيذ الاختبارات لكافة برامج القسم وتقييم نتائجها',
+    tasks: [
+      'الإشراف على سير الاختبارات وتنظيمها',
+      'إعداد قاعات الاختبار والتأكد من جاهزيتها',
+      'تنسيق مواعيد الاختبارات العملية والنظرية بناء على اقتراحات القسم والطلبة',
+      'إعداد جدول المراقبات للاختبارات',
+      'التأكد من توافق الأسئلة وورقة الاختبار مع معايير الجامعة ومعايير الاعتماد',
+      'الإشراف على بناء وتنفيذ الاختبارات الموحدة بين شعب المقرر الواحد',
+      'التنسيق والإعداد لاختبارات التخرج أو ما يستجد من اختبارات',
+      'تحليل نتائج الاختبارات وكتابة تقاريرها',
+      'إعداد التقارير والإحصائيات الدورية والنهائية عن الاختبارات',
+      'تحديد نقاط القوة والنقاط التي تحتاج إلى تحسين',
+      'إعداد خطة تحسين والإشراف على تنفيذها',
+      'إعداد تقرير ختامي في نهاية كل فصل دراسي'
+    ]
+  },
+  { 
+    name: 'لجنة الجداول الدراسية', 
+    points: 2, 
+    members: 2,
+    mainTask: 'إعداد الجداول الدراسية لكافة برامج القسم (6 برامج) في جميع الفصول الدراسية',
+    tasks: [
+      'إعداد الجداول الدراسية لجميع البرامج (6 برامج) في جميع الفصول الدراسية (3 فصول سنوياً)',
+      'توزيع المقررات على أعضاء هيئة التدريس وفق التخصص',
+      'مراعاة عدم التعارض في مواعيد الحضور',
+      'التنسيق مع عمادة القبول والتسجيل لتوفير القاعات',
+      'حل التعارضات والمشاكل التي قد تطرأ',
+      'إجراء التعديلات اللازمة على الجداول عند الحاجة',
+      'مراعاة توزيع الحمل الأكاديمي بشكل عادل على أعضاء هيئة التدريس',
+      'التأكد من توافق الجداول مع الخطط الدراسية المعتمدة',
+      'نشر الجداول النهائية للطلاب وأعضاء هيئة التدريس',
+      'إعداد تقرير عن الجداول في بداية كل فصل'
+    ]
+  },
+  { 
+    name: 'لجنة الأنشطة الطلابية', 
+    points: 4, 
+    members: 2,
+    mainTask: 'تخطيط وتنفيذ الأنشطة الطلابية المتنوعة لجميع برامج القسم',
+    tasks: [
+      'إعداد دليل للأنشطة والخدمة المجتمعية',
+      'إعداد خطة أنشطة المناسبات الدينية والعلمية والمجتمعية',
+      'تنسيق مشاركة الطلبة والمنسوبين في أنشطة الجامعة',
+      'إعداد خطة الأنشطة الطلابية في ضوء رسالة وأهداف القسم',
+      'الإشراف على تنفيذ الأنشطة الدينية والثقافية والاجتماعية والرياضية',
+      'إقامة المحاضرات والندوات العلمية والثقافية بالتعاون مع الجهات ذات العلاقة',
+      'إقامة الدورات التدريبية وورش العمل اللازمة لتطوير مهارات الطلبة',
+      'إقامة المسابقات في مختلف المجالات والمشاركة في الملتقيات',
+      'التنسيق لإقامة الرحلات العلمية والاجتماعية وتبادل الزيارات',
+      'توثيق الأنشطة بالصور والتقارير',
+      'إعداد تقرير إنجاز في نهاية كل فصل دراسي'
+    ]
+  },
   { 
     name: 'لجنة الدراسات العليا والبحث العلمي', 
     points: 6, 
@@ -66,7 +338,67 @@ const COMMITTEES = [
       'إعداد خطة بحثية تشتمل على اهتمامات أعضاء هيئة التدريس',
       'حصر ومتابعة النشاط البحثي لأعضاء هيئة التدريس',
       'إعداد أدلة للبحوث المنشورة لأعضاء هيئة التدريس وبحوث الماجستير والدكتوراة',
-      'تشجيع الأبحاث العلمية التي تخدم احتياجات سوق العمل وقضايا المجتمع'
+      'تشجيع الأبحاث العلمية التي تخدم احتياجات سوق العمل وقضايا المجتمع',
+      'فتح قنوات اتصال مع الجهات الراغبة في الاستفادة من خدمات أعضاء هيئة التدريس البحثية',
+      'متابعة المبتعثين من منسوبي القسم',
+      'متابعة التقدم الدراسي لطلبة الماجستير والدكتوراة',
+      'متابعة إجراءات تسجيل الرسائل العلمية وتشكيل لجان المناقشة',
+      'متابعة إجراءات منح الدرجات والتخرج',
+      'إعداد التقارير والإحصائيات الدورية عن نشاط البحث العلمي والابتكار',
+      'وضع خطط التحسين والإشراف على تنفيذها',
+      'إعداد تقرير إنجاز في نهاية كل فصل دراسي'
+    ]
+  },
+  { 
+    name: 'لجنة الفحص العلمي لخطط الرسائل - مسار القراءات', 
+    points: 2, 
+    members: 2,
+    mainTask: 'فحص ومراجعة خطط الرسائل العلمية (ماجستير ودكتوراه) لمسار القراءات',
+    tasks: [
+      'فحص الخطط العلمية لرسائل الدكتوراة والمشاريع البحثية للماجستير وفق الضوابط المثبتة',
+      'التقيد بالحد الأقصى لعدد الخطط (3 خطط أسبوعياً في كل تخصص)',
+      'تسليم تقرير بنتيجة الفحص لرئيس القسم خلال 5 أيام عمل',
+      'التأكد من أصالة الموضوع وجدته العلمية',
+      'التحقق من وضوح الأهداف ومنهجية البحث',
+      'تقييم مدى ملاءمة الخطة لمستوى الدرجة العلمية اللازمة',
+      'التأكد من توفر المراجع والمصادر اللازمة',
+      'إبداء الملاحظات والتوصيات للتحسين',
+      'عرض التقرير للمناقشة في مجلس القسم'
+    ]
+  },
+  { 
+    name: 'لجنة الفحص العلمي لخطط الرسائل - مسار الدراسات القرآنية', 
+    points: 2, 
+    members: 2,
+    mainTask: 'فحص ومراجعة خطط الرسائل العلمية (ماجستير ودكتوراه) لمسار الدراسات القرآنية',
+    tasks: [
+      'فحص الخطط العلمية لرسائل الدكتوراة والمشاريع البحثية للماجستير وفق الضوابط المثبتة',
+      'التقيد بالحد الأقصى لعدد الخطط (3 خطط أسبوعياً في كل تخصص)',
+      'تسليم تقرير بنتيجة الفحص لرئيس القسم خلال 5 أيام عمل',
+      'التأكد من أصالة الموضوع وجدته العلمية',
+      'التحقق من وضوح الأهداف ومنهجية البحث',
+      'تقييم مدى ملاءمة الخطة لمستوى الدرجة العلمية اللازمة',
+      'التأكد من توفر المراجع والمصادر اللازمة',
+      'إبداء الملاحظات والتوصيات للتحسين',
+      'عرض التقرير للمناقشة في مجلس القسم'
+    ]
+  },
+  { 
+    name: 'لجنة العلاقات العامة والإعلام', 
+    points: 2, 
+    members: 2,
+    mainTask: 'إدارة الحضور الإعلامي للقسم وتعزيز التواصل مع الجمهور الداخلي والخارجي',
+    tasks: [
+      'تحديث صفحة القسم على موقع الجامعة بشكل دوري',
+      'تحريك منصات الإعلام في القسم (بحساب تويتر وغيره)',
+      'إعلان كل نشاط في القسم بطريقة مشوقة وجذابة',
+      'متابعة أحداث الجامعة والقسم والتغريد بها',
+      'متابعة الأقسام العلمية المناظرة والاستفادة من تغريداتها',
+      'دعم تخصص القراءات بتعليقات وفوائد علمية',
+      'إبراز نشاطات أعضاء القسم وكتبهم وبحوثهم',
+      'عمل ملخصات لأبحاث الدراسات العليا بالقسم',
+      'تفعيل تعاون أعضاء القسم مع الحساب وتفاعلهم معه',
+      'إحداث منصات جديدة تهتم بالقراءات وبالقرآن'
     ]
   },
   { 
@@ -137,24 +469,21 @@ function CommitteeManager() {
   const getMemberLevel = (points) => {
     if (points >= 16) return { 
       name: 'متميز', 
-      bgColor: 'bg-gradient-to-r from-purple-50 to-pink-50', 
-      borderColor: 'border-purple-500', 
-      textColor: 'text-purple-700', 
-      badgeColor: 'bg-gradient-to-r from-purple-600 to-pink-600' 
+      bgColor: 'linear-gradient(135deg, #a855f7 0%, #ec4899 100%)', 
+      borderColor: '#a855f7', 
+      textColor: '#a855f7'
     };
     if (points >= 10) return { 
       name: 'متقدم', 
-      bgColor: 'bg-gradient-to-r from-blue-50 to-cyan-50', 
-      borderColor: 'border-blue-500', 
-      textColor: 'text-blue-700', 
-      badgeColor: 'bg-gradient-to-r from-blue-600 to-cyan-600' 
+      bgColor: 'linear-gradient(135deg, #3b82f6 0%, #06b6d4 100%)', 
+      borderColor: '#3b82f6', 
+      textColor: '#3b82f6'
     };
     if (points >= 8) return { 
       name: 'مستوفى', 
-      bgColor: 'bg-gradient-to-r from-green-50 to-emerald-50', 
-      borderColor: 'border-green-500', 
-      textColor: 'text-green-700', 
-      badgeColor: 'bg-gradient-to-r from-green-600 to-emerald-600' 
+      bgColor: 'linear-gradient(135deg, #10b981 0%, #059669 100%)', 
+      borderColor: '#10b981', 
+      textColor: '#10b981'
     };
     return null;
   };
@@ -174,105 +503,380 @@ function CommitteeManager() {
   };
 
   const handlePrint = () => window.print();
+  
   const toggleCommittee = (index) => {
     setExpandedCommittees(prev => ({ ...prev, [index]: !prev[index] }));
   };
 
-  return (
-    <div className="container">
-      <div className="header">
-        <h1>🎓 نظام إدارة اللجان</h1>
-        <p>منظومة متكاملة لتوزيع أعضاء هيئة التدريس على اللجان</p>
-      </div>
+  return React.createElement('div', { className: 'container' }, 
+    // Header
+    React.createElement('div', { className: 'header' },
+      React.createElement('h1', null, '🎓 نظام إدارة اللجان'),
+      React.createElement('p', null, 'منظومة متكاملة لتوزيع أعضاء هيئة التدريس على اللجان')
+    ),
 
-      <div className="tabs-container">
-        <button className={\`tab-button \${activeTab === 'selection' ? 'active' : 'inactive'}\`} onClick={() => setActiveTab('selection')}>
-          الاختيار
-        </button>
-        <button className={\`tab-button \${activeTab === 'members' ? 'active' : 'inactive'}\`} onClick={() => setActiveTab('members')}>
-          أعضاء هيئة التدريس
-        </button>
-        <button className={\`tab-button \${activeTab === 'formation' ? 'active' : 'inactive'}\`} onClick={() => setActiveTab('formation')}>
-          تشكيل اللجان
-        </button>
-        <button className={\`tab-button \${activeTab === 'details' ? 'active' : 'inactive'}\`} onClick={() => setActiveTab('details')}>
-          تفاصيل اللجان
-        </button>
-      </div>
+    // Tabs
+    React.createElement('div', { className: 'tabs-container' },
+      React.createElement('button', {
+        className: `tab-button ${activeTab === 'selection' ? 'active' : 'inactive'}`,
+        onClick: () => setActiveTab('selection')
+      }, 'الاختيار'),
+      React.createElement('button', {
+        className: `tab-button ${activeTab === 'members' ? 'active' : 'inactive'}`,
+        onClick: () => setActiveTab('members')
+      }, 'أعضاء هيئة التدريس'),
+      React.createElement('button', {
+        className: `tab-button ${activeTab === 'formation' ? 'active' : 'inactive'}`,
+        onClick: () => setActiveTab('formation')
+      }, 'تشكيل اللجان'),
+      React.createElement('button', {
+        className: `tab-button ${activeTab === 'details' ? 'active' : 'inactive'}`,
+        onClick: () => setActiveTab('details')
+      }, 'تفاصيل اللجان')
+    ),
 
-      {activeTab === 'selection' && (
-        <div className="fade-in">
-          <div className="alert">
-            <h4>⚠️ تعليمات الاختيار:</h4>
-            <ul>
-              <li>يمكن للعضو الواحد اختيار عدة لجان</li>
-              <li><strong>8 نقاط أو أكثر = مستوفى</strong> (الحد الأدنى المطلوب)</li>
-              <li><strong>10 نقاط أو أكثر = متقدم</strong> (مستوى جيد)</li>
-              <li><strong>16 نقطة أو أكثر = متميز</strong> (مستوى ممتاز)</li>
-            </ul>
-          </div>
+    // Selection Tab
+    activeTab === 'selection' && React.createElement('div', { className: 'fade-in' },
+      React.createElement('div', { className: 'alert' },
+        React.createElement('h4', null, '⚠️ تعليمات الاختيار:'),
+        React.createElement('ul', null,
+          React.createElement('li', null, 'يمكن للعضو الواحد اختيار عدة لجان'),
+          React.createElement('li', null, React.createElement('strong', null, '8 نقاط أو أكثر = مستوفى'), ' (الحد الأدنى المطلوب)'),
+          React.createElement('li', null, React.createElement('strong', null, '10 نقاط أو أكثر = متقدم'), ' (مستوى جيد)'),
+          React.createElement('li', null, React.createElement('strong', null, '16 نقطة أو أكثر = متميز'), ' (مستوى ممتاز)')
+        )
+      ),
 
-          {assignments.map((assignment, committeeIndex) => (
-            <div key={committeeIndex} className="committee-card">
-              <div className="committee-header">
-                <div className="committee-name">{COMMITTEES[committeeIndex].name}</div>
-                <div className="committee-info">
-                  <div className="committee-points">النقاط: {assignment.points}</div>
-                  <div className="committee-members-count">عدد الأعضاء: {assignment.memberCount}</div>
-                </div>
-              </div>
+      assignments.map((assignment, committeeIndex) =>
+        React.createElement('div', { key: committeeIndex, className: 'committee-card' },
+          React.createElement('div', { className: 'committee-header' },
+            React.createElement('div', { className: 'committee-name' }, COMMITTEES[committeeIndex].name),
+            React.createElement('div', { className: 'committee-info' },
+              React.createElement('div', { className: 'committee-points' }, `النقاط: ${assignment.points}`),
+              React.createElement('div', { className: 'committee-members-count' }, `عدد الأعضاء: ${assignment.memberCount}`)
+            )
+          ),
 
-              <div className="selection-grid">
-                {assignment.members.map((member, slot) => (
-                  <div key={slot} className="member-select-wrapper">
-                    <label>العضو {slot + 1}</label>
-                    <select value={member} onChange={(e) => handleMemberSelect(committeeIndex, slot, e.target.value)} className="member-select">
-                      <option value="">-- اختر عضو --</option>
-                      {MEMBERS.map(memberName => {
-                        const points = getMemberPoints(memberName);
-                        const level = getMemberLevel(points);
-                        return (
-                          <option key={memberName} value={memberName}>
-                            {memberName} ({points} نقطة) {level ? \`- \${level.name} ✓\` : ''}
-                          </option>
-                        );
-                      })}
-                    </select>
-                    {member && (() => {
-                      const points = getMemberPoints(member);
-                      const level = getMemberLevel(points);
-                      return (
-                        <div className={\`selected-info \${level ? 'level-badge' : 'incomplete'}\`} style={level ? {background: level.badgeColor.replace('bg-gradient-to-r', 'linear-gradient(to right,')} : {}}>
-                          إجمالي: {points} نقطة {level && \`- \${level.name} ✓\`}
-                        </div>
-                      );
-                    })()}
-                  </div>
-                ))}
-              </div>
-            </div>
-          ))}
-        </div>
-      )}
+          React.createElement('div', { className: 'selection-grid' },
+            assignment.members.map((member, slot) =>
+              React.createElement('div', { key: slot, className: 'member-select-wrapper' },
+                React.createElement('label', null, `العضو ${slot + 1}`),
+                React.createElement('select', {
+                  value: member,
+                  onChange: (e) => handleMemberSelect(committeeIndex, slot, e.target.value),
+                  className: 'member-select'
+                },
+                  React.createElement('option', { value: '' }, '-- اختر عضو --'),
+                  MEMBERS.map(memberName => {
+                    const points = getMemberPoints(memberName);
+                    const level = getMemberLevel(points);
+                    return React.createElement('option', {
+                      key: memberName,
+                      value: memberName
+                    }, `${memberName} (${points} نقطة) ${level ? `- ${level.name} ✓` : ''}`);
+                  })
+                ),
+                member && (() => {
+                  const points = getMemberPoints(member);
+                  const level = getMemberLevel(points);
+                  return React.createElement('div', {
+                    className: `selected-info ${level ? 'level-badge' : 'incomplete'}`,
+                    style: level ? { background: level.bgColor, color: 'white' } : {}
+                  }, `إجمالي: ${points} نقطة ${level ? `- ${level.name} ✓` : ''}`);
+                })()
+              )
+            )
+          )
+        )
+      )
+    ),
 
-      {/* بقية التبويبات... */}
-    </div>
+    // Members Tab
+    activeTab === 'members' && React.createElement('div', { className: 'fade-in' },
+      React.createElement('div', { className: 'report-container' },
+        React.createElement('h2', { className: 'report-title' }, '👥 أعضاء هيئة التدريس'),
+        
+        React.createElement('div', { className: 'members-grid' },
+          getMemberStats().map((member, idx) => {
+            const level = getMemberLevel(member.points);
+            return React.createElement('div', {
+              key: idx,
+              className: `member-card ${level ? 'complete' : 'incomplete'}`,
+              style: level ? { 
+                background: level.bgColor.replace('135deg', '155deg'),
+                borderColor: level.borderColor,
+                color: 'white'
+              } : {}
+            },
+              React.createElement('div', { className: 'member-header' },
+                React.createElement('div', {
+                  className: `member-name ${level ? 'complete' : 'incomplete'}`,
+                  style: level ? { color: 'white' } : {}
+                }, member.name),
+                React.createElement('div', {
+                  className: `member-points-badge ${level ? 'complete' : 'incomplete'}`,
+                  style: level ? { 
+                    background: 'rgba(255,255,255,0.3)', 
+                    color: 'white',
+                    border: '2px solid white'
+                  } : {}
+                }, `${member.points} نقطة`)
+              ),
+              
+              level && React.createElement('div', {
+                style: {
+                  marginBottom: '15px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '8px',
+                  color: 'white',
+                  fontWeight: '600'
+                }
+              }, `✓ ${level.name}`),
+              
+              member.committees.length > 0 ? React.createElement('div', { className: 'member-committees' },
+                React.createElement('div', { 
+                  className: 'member-committees-title',
+                  style: level ? { color: 'rgba(255,255,255,0.9)' } : {}
+                }, 'اللجان:'),
+                React.createElement('ul', { className: 'member-committees-list' },
+                  member.committees.map((committee, i) =>
+                    React.createElement('li', { 
+                      key: i,
+                      style: level ? { 
+                        background: 'rgba(255,255,255,0.2)',
+                        color: 'white',
+                        border: '1px solid rgba(255,255,255,0.3)'
+                      } : {}
+                    }, committee)
+                  )
+                )
+              ) : React.createElement('div', { 
+                className: 'no-committees',
+                style: level ? { color: 'rgba(255,255,255,0.8)' } : {}
+              }, 'لم يتم التعيين في أي لجنة')
+            );
+          })
+        )
+      )
+    ),
+
+    // Formation Tab
+    activeTab === 'formation' && React.createElement('div', { className: 'fade-in' },
+      React.createElement('div', { className: 'report-container' },
+        React.createElement('div', { className: 'report-header' },
+          React.createElement('h2', { className: 'report-title' }, '📊 تقرير تشكيل اللجان'),
+          React.createElement('button', {
+            onClick: handlePrint,
+            className: 'print-button'
+          }, '🖨️ طباعة التقرير')
+        ),
+
+        React.createElement('div', { className: 'report-content' },
+          React.createElement('h1', null, 'تقرير تشكيل اللجان'),
+          React.createElement('p', null, 'للعام الجامعي 1446هـ'),
+          React.createElement('p', { style: { fontSize: '0.9em', color: '#999' } },
+            `تاريخ الإصدار: ${new Date().toLocaleDateString('ar-SA')}`
+          )
+        ),
+
+        COMMITTEES.map((committee, idx) => {
+          const assignment = assignments[idx];
+          const hasMembers = assignment.members.some(m => m);
+          if (!hasMembers) return null;
+          
+          return React.createElement('div', { key: idx, className: 'report-section' },
+            React.createElement('h3', null, committee.name),
+            
+            React.createElement('div', { className: 'report-info' },
+              React.createElement('div', { className: 'report-info-item' },
+                React.createElement('span', { className: 'report-info-label' }, 'عدد الأعضاء:'),
+                React.createElement('span', { className: 'report-info-value' }, `${committee.members} أعضاء`)
+              ),
+              React.createElement('div', { className: 'report-info-item' },
+                React.createElement('span', { className: 'report-info-label' }, 'النقاط:'),
+                React.createElement('span', { className: 'report-info-value' }, `${committee.points} نقطة`)
+              )
+            ),
+            
+            React.createElement('div', null,
+              React.createElement('div', { className: 'report-members-title' }, 'أعضاء اللجنة:'),
+              assignment.members.map((member, i) => member && (() => {
+                const level = getMemberLevel(getMemberPoints(member));
+                return React.createElement('div', {
+                  key: i,
+                  className: 'report-member',
+                  style: { justifyContent: 'space-between' }
+                },
+                  React.createElement('div', { style: { display: 'flex', alignItems: 'center', gap: '15px' } },
+                    React.createElement('div', { className: 'report-member-number' }, i + 1),
+                    React.createElement('div', { className: 'report-member-name' }, member)
+                  ),
+                  level && React.createElement('span', {
+                    style: {
+                      fontSize: '0.75em',
+                      background: level.bgColor,
+                      color: 'white',
+                      padding: '6px 12px',
+                      borderRadius: '15px',
+                      fontWeight: '600'
+                    }
+                  }, `${level.name} ✓`)
+                );
+              })())
+            )
+          );
+        }),
+
+        React.createElement('div', { className: 'stats-summary' },
+          React.createElement('h3', null, 'ملخص إحصائي'),
+          React.createElement('div', { className: 'stats-grid', style: { gridTemplateColumns: 'repeat(4, 1fr)' } },
+            React.createElement('div', { className: 'stat-box blue' },
+              React.createElement('div', { className: 'stat-number' }, COMMITTEES.length),
+              React.createElement('div', { className: 'stat-label' }, 'إجمالي اللجان')
+            ),
+            React.createElement('div', { className: 'stat-box green' },
+              React.createElement('div', { className: 'stat-number' }, 
+                getMemberStats().filter(m => getMemberLevel(m.points)?.name === 'مستوفى').length
+              ),
+              React.createElement('div', { className: 'stat-label' }, 'مستوفى (8+)')
+            ),
+            React.createElement('div', { className: 'stat-box blue' },
+              React.createElement('div', { className: 'stat-number' }, 
+                getMemberStats().filter(m => getMemberLevel(m.points)?.name === 'متقدم').length
+              ),
+              React.createElement('div', { className: 'stat-label' }, 'متقدم (10+)')
+            ),
+            React.createElement('div', { className: 'stat-box purple' },
+              React.createElement('div', { className: 'stat-number' }, 
+                getMemberStats().filter(m => getMemberLevel(m.points)?.name === 'متميز').length
+              ),
+              React.createElement('div', { className: 'stat-label' }, 'متميز (16+)')
+            )
+          )
+        )
+      )
+    ),
+
+    // Details Tab
+    activeTab === 'details' && React.createElement('div', { className: 'fade-in' },
+      React.createElement('div', { className: 'report-container' },
+        React.createElement('h2', { className: 'report-title' }, '📋 تفاصيل اللجان'),
+        
+        React.createElement('div', { style: { marginTop: '30px' } },
+          COMMITTEES.map((committee, idx) =>
+            React.createElement('div', {
+              key: idx,
+              style: {
+                border: '2px solid #e5e7eb',
+                borderRadius: '12px',
+                overflow: 'hidden',
+                marginBottom: '16px'
+              }
+            },
+              React.createElement('div', {
+                style: {
+                  background: 'linear-gradient(to right, #eef2ff, #dbeafe)',
+                  padding: '16px',
+                  cursor: 'pointer'
+                },
+                onClick: () => toggleCommittee(idx)
+              },
+                React.createElement('div', {
+                  style: {
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    alignItems: 'start',
+                    marginBottom: '8px'
+                  }
+                },
+                  React.createElement('h3', {
+                    style: {
+                      fontWeight: 'bold',
+                      fontSize: '1.1em',
+                      color: '#333',
+                      flex: 1
+                    }
+                  }, committee.name),
+                  React.createElement('span', {
+                    style: {
+                      fontSize: '0.85em',
+                      background: '#667eea',
+                      color: 'white',
+                      padding: '4px 12px',
+                      borderRadius: '12px',
+                      fontWeight: '600'
+                    }
+                  }, `${committee.points} نقطة`)
+                ),
+                React.createElement('p', {
+                  style: {
+                    fontSize: '0.9em',
+                    color: '#555',
+                    marginBottom: '12px'
+                  }
+                }, committee.mainTask),
+                React.createElement('button', {
+                  style: {
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '8px',
+                    color: '#667eea',
+                    fontWeight: '600',
+                    fontSize: '0.9em',
+                    background: 'none',
+                    border: 'none',
+                    cursor: 'pointer'
+                  }
+                },
+                  expandedCommittees[idx] ? '▲ إخفاء التفاصيل' : '▼ عرض التفاصيل'
+                )
+              ),
+              
+              expandedCommittees[idx] && React.createElement('div', {
+                style: { padding: '16px', background: 'white' }
+              },
+                React.createElement('h4', {
+                  style: {
+                    fontWeight: '600',
+                    color: '#555',
+                    marginBottom: '12px'
+                  }
+                }, 'المهام التفصيلية:'),
+                React.createElement('ul', { style: { listStyle: 'none', padding: 0 } },
+                  committee.tasks.map((task, taskIdx) =>
+                    React.createElement('li', {
+                      key: taskIdx,
+                      style: {
+                        display: 'flex',
+                        gap: '12px',
+                        marginBottom: '12px',
+                        padding: '8px',
+                        background: '#f9fafb',
+                        borderRadius: '6px',
+                        fontSize: '0.9em',
+                        lineHeight: '1.6'
+                      }
+                    },
+                      React.createElement('span', {
+                        style: {
+                          color: '#667eea',
+                          fontWeight: 'bold',
+                          flexShrink: 0
+                        }
+                      }, `${taskIdx + 1}.`),
+                      React.createElement('span', null, task)
+                    )
+                  )
+                )
+              )
+            )
+          )
+        )
+      )
+    )
   );
 }
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
-root.render(<CommitteeManager />);`;
-
-console.log('✅ تم إنشاء ملف app.js النهائي بنجاح!');
-console.log('\n📊 التحديثات الرئيسية:');
-console.log('1. ✓ نظام المستويات الجديد:');
-console.log('   - 8+ نقاط = مستوفى (أخضر)');
-console.log('   - 10+ نقاط = متقدم (أزرق)');
-console.log('   - 16+ نقطة = متميز (بنفسجي)');
-console.log('2. ✓ تبويب "تشكيل اللجان" مع زر الطباعة');
-console.log('3. ✓ تبويب "تفاصيل اللجان" الجديد مع المهام التفصيلية');
-console.log('4. ✓ حذف تبويب "التقارير" القديم');
-console.log('5. ✓ تحديث نقاط لجنة الدراسات العليا إلى 6 نقاط');
-console.log('6. ✓ إضافة مهام لجنة المتابعة (3 أعضاء، 4 نقاط)');
-
-'تم الانتهاء بنجاح!';
+root.render(React.createElement(CommitteeManager));
