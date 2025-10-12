@@ -1,4 +1,4 @@
-const styleCSS = `* {
+* {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
@@ -74,11 +74,6 @@ body {
 
 .tab-button.inactive:hover {
     background: rgba(255,255,255,0.9);
-}
-
-.tab-icon {
-    width: 20px;
-    height: 20px;
 }
 
 /* Alert Box */
@@ -213,6 +208,11 @@ body {
 .selected-info.incomplete {
     background: #f5f5f5;
     color: #666;
+}
+
+.selected-info.level-badge {
+    color: white !important;
+    font-weight: 600;
 }
 
 /* Members Tab */
@@ -709,95 +709,4 @@ body {
 
 .bg-info-light {
     background-color: #e3f2fd;
-}`;
-
-console.log('✅ تم إنشاء ملف style.css بنجاح!');
-console.log('الحجم: ' + styleCSS.length + ' حرف');
-
-/* إضافة أنماط جديدة للمستويات */
-.level-badge {
-    color: white !important;
-    font-weight: 600;
 }
-
-/* أنماط تبويب تفاصيل اللجان */
-.committee-details-container {
-    border: 2px solid #e5e7eb;
-    border-radius: 12px;
-    overflow: hidden;
-    margin-bottom: 16px;
-}
-
-.committee-details-header {
-    background: linear-gradient(to right, #eef2ff, #dbeafe);
-    padding: 16px;
-    cursor: pointer;
-    transition: all 0.3s;
-}
-
-.committee-details-header:hover {
-    background: linear-gradient(to right, #e0e7ff, #bfdbfe);
-}
-
-.committee-details-content {
-    padding: 16px;
-    background: white;
-}
-
-.task-list {
-    list-style: none;
-    padding: 0;
-}
-
-.task-list li {
-    display: flex;
-    gap: 12px;
-    margin-bottom: 12px;
-    padding: 8px;
-    background: #f9fafb;
-    border-radius: 6px;
-    font-size: 0.9em;
-    line-height: 1.6;
-}
-
-.task-number {
-    color: #667eea;
-    font-weight: bold;
-    flex-shrink: 0;
-}
-
-/* تحسينات الطباعة */
-@media print {
-    .committee-details-header {
-        background: white !important;
-        border-bottom: 2px solid #667eea;
-    }
-    
-    .task-list li {
-        background: white !important;
-        border: 1px solid #e5e7eb;
-        page-break-inside: avoid;
-    }
-}
-
-/* ألوان المستويات */
-.level-mastofa {
-    background: linear-gradient(to right, #10b981, #059669);
-}
-
-.level-mutaqadim {
-    background: linear-gradient(to right, #3b82f6, #06b6d4);
-}
-
-.level-mutamayyiz {
-    background: linear-gradient(to right, #a855f7, #ec4899);
-}`;
-
-console.log('✅ تم تحديث CSS بنجاح');
-console.log('الآن النظام جاهز بالكامل مع:');
-console.log('- ألوان مميزة للمستويات الثلاثة');
-console.log('- تبويب تفاصيل اللجان التفاعلي');
-console.log('- تحسينات الطباعة');
-
-'تم!';
-styleCSS;
