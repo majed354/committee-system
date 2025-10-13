@@ -508,53 +508,93 @@ const MEMBERS = [
 function CommitteeManager() {
   const [activeTab, setActiveTab] = useState('selection');
   const [expandedCommittees, setExpandedCommittees] = useState({});
- 
-  // ↓↓↓ ابدأ الاستبدال من هنا ↓↓↓
+
+  // الحالة الأساسية (تُستبدل لاحقًا عند التحميل من RTDB)
   const [assignments, setAssignments] = useState(
-    COMMITTEES.map(c => ({ 
-      committee: c.name, 
+    COMMITTEES.map(c => ({
+      committee: c.name,
       points: c.points,
       memberCount: c.members,
-      members: Array(c.members).fill('') 
+      members: Array(c.members).fill('')
     }))
   );
   const [isLoading, setIsLoading] = useState(true);
 
-  // 🔥 تحميل + الاستماع للتغييرات من Firebase (كتلة موحّدة)
+  // ---------- أدوات مساعدة داخلية ----------
+  // تطبيع أي قيمة آتية من RTDB إلى مصفوفة مكتملة الطول بدون ثقوب
+  const toFixedLengthArray = (val, len) => {
+    const arr = Array(len).fill('');
+    if (Array.isArray(val)) {
+      for (let i = 0; i < len; i++) {
+        arr[i] = (val[i] === undefined || val[i] === null) ? '' : val[i];
+      }
+      return arr;
+    }
+    if (val && typeof val === 'object') {
+      Object.keys(val).forEach(k => {
+        const i = Number(k);
+        if (!Number.isNaN(i) && i < len) arr[i] = val[k] || '';
+      });
+      return arr;
+    }
+    return arr;
+  };
+
+  // احتساب مجموع نقاط عضو (كم لجنة تم تعيينه فيها × نقاط اللجنة)
+  const getMemberPoints = (memberName) => {
+    if (!memberName) return 0;
+    return assignments.reduce((total, a) => {
+      const found = a.members.some(m => m === memberName);
+      return total + (found ? a.points : 0);
+    }, 0);
+  };
+
+  // توصيف مستوى العضو بناءً على النقاط (يمكن تعديل العتبات بسهولة)
+  const getMemberLevel = (points) => {
+    if (points >= 8) return {
+      name: 'مستوفى',
+      bgColor: 'linear-gradient(135deg, #10b981, #059669)',
+      borderColor: '#10b981',
+      textColor: '#fff'
+    };
+    if (points >= 6) return {
+      name: 'جيد جداً',
+      bgColor: 'linear-gradient(135deg, #06b6d4, #0ea5e9)',
+      borderColor: '#06b6d4',
+      textColor: '#fff'
+    };
+    if (points >= 4) return {
+      name: 'جيد',
+      bgColor: 'linear-gradient(135deg, #a78bfa, #7c3aed)',
+      borderColor: '#7c3aed',
+      textColor: '#fff'
+    };
+    return null;
+  };
+
+  // ---------- تحميل حي من RTDB ----------
   useEffect(() => {
-    if (!(typeof window !== 'undefined' && window.firebase?.database)) {
-      console.warn('⚠️ Firebase غير مفعل');
+    if (!window.firebase || !window.firebase.database) {
+      console.error('Firebase not initialized');
       setIsLoading(false);
       return;
     }
-
     const db = window.firebase.database();
     const assignmentsRef = db.ref('assignments');
 
-    // تحويل أي Array-like Object إلى Array بطول ثابت
-// يحوّل أي قيمة (Array أو Object) إلى مصفوفة مكتملة الطول دون ثقوب
-const toFixedLengthArray = (val, len) => {
-  const arr = Array(len).fill('');
-  if (Array.isArray(val)) {
-    for (let i = 0; i < len; i++) {
-      arr[i] = (val[i] === undefined || val[i] === null) ? '' : val[i];
-    }
-    return arr;
-  }
-  if (val && typeof val === 'object') {
-    Object.keys(val).forEach(k => {
-      const i = Number(k);
-      if (!Number.isNaN(i) && i < len) arr[i] = val[k] || '';
-    });
-    return arr;
-  }
-  return arr;
-};
-
-
-    const onValue = (snapshot) => {
-      const raw = snapshot.val(); // قد يكون Object بمفاتيح رقمية
-      if (raw) {
+    const onValue = (snap) => {
+      const raw = snap.val();
+      if (!raw) {
+        // تهيئة أولية (فارغة) بنفس طول COMMITTEES
+        const seed = COMMITTEES.map(c => ({
+          committee: c.name,
+          points: c.points,
+          memberCount: c.members,
+          members: Array(c.members).fill('')
+        }));
+        setAssignments(seed);
+      } else {
+        // تطبيع البيانات القادمة من RTDB للجميع (منع الثقوب)
         const normalized = COMMITTEES.map((c, i) => ({
           committee: c.name,
           points: c.points,
@@ -574,481 +614,195 @@ const toFixedLengthArray = (val, len) => {
     return () => assignmentsRef.off('value', onValue);
   }, []);
 
-  // === دوال المساعدة كما هي ===
-  const getMemberPoints = (memberName) => {
-    return assignments.reduce((total, assignment) => {
-      if (assignment.members.includes(memberName)) return total + assignment.points;
-      return total;
-    }, 0);
-  };
-
-  const getMemberLevel = (points) => {
-    if (points >= 16) return { 
-      name: 'متميز', 
-      bgColor: 'linear-gradient(135deg, #a855f7 0%, #ec4899 100%)', 
-      borderColor: '#a855f7', 
-      textColor: '#a855f7'
-    };
-    if (points >= 10) return { 
-      name: 'متقدم', 
-      bgColor: 'linear-gradient(135deg, #3b82f6 0%, #06b6d4 100%)', 
-      borderColor: '#3b82f6', 
-      textColor: '#3b82f6'
-    };
-    if (points >= 8) return { 
-      name: 'مستوفى', 
-      bgColor: 'linear-gradient(135deg, #10b981 0%, #059669 100%)', 
-      borderColor: '#10b981', 
-      textColor: '#10b981'
-    };
-    return null;
-  };
-
-  // 🔒 حفظ جزئي وقت الاختيار فقط (بدون حفظ شامل تلقائي)
-  const handleMemberSelect = (committeeIndex, slot, memberName) => {
-    // تحديث الواجهة فورًا
+  // ---------- حفظ الاختيار ----------
+  const handleMemberSelect = async (committeeIndex, slot, memberName) => {
+    // 1) حدث الواجهة فوراً
     setAssignments(prev => {
-      const next = prev.map(a => ({ ...a, members: [...a.members] }));
-      next[committeeIndex].members[slot] = memberName;
+      const next = prev.map((a, idx) => {
+        if (idx !== committeeIndex) return a;
+        const members = a.members.slice();
+        members[slot] = memberName || '';
+        // اضمن عدم وجود ثقوب
+        const full = toFixedLengthArray(members, a.memberCount);
+        return { ...a, members: full };
+      });
       return next;
     });
 
-    // كتابة جزئية في RTDB لضمان التزامن الفوري بين الأجهزة
+    // 2) احفظ على RTDB (مصفوفة كاملة لمنع الثقوب)
     try {
-      if (typeof window !== 'undefined' && window.firebase?.database) {
+      if (window.firebase?.database) {
         const db = window.firebase.database();
-        db.ref(`assignments/${committeeIndex}/members/${slot}`)
-          .set(memberName || '')
-          .then(() => console.log('✅ حفظ فوري لعضو اللجنة'))
-          .catch(err => console.error('❌ خطأ في حفظ العضو:', err));
+        const path = `assignments/${committeeIndex}/members`;
+        // خذ النسخة الأحدث من الحالة بعد setState باستخدام callback صغير
+        let fullMembers;
+        {
+          const a = assignments[committeeIndex];
+          const clone = (a ? a.members.slice() : Array(COMMITTEES[committeeIndex].members).fill(''));
+          clone[slot] = memberName || '';
+          fullMembers = toFixedLengthArray(clone, COMMITTEES[committeeIndex].members);
+        }
+        await db.ref(path).set(fullMembers);
+        console.log('✅ تم حفظ المصفوفة كاملة إلى RTDB');
       }
     } catch (e) {
-      console.error('❌ فشل الحفظ الجزئي:', e);
+      console.error('❌ فشل حفظ المصفوفة الكاملة:', e);
     }
   };
 
-  const getMemberStats = () => {
-    return MEMBERS.map(member => ({
-      name: member,
-      points: getMemberPoints(member),
-      committees: assignments.filter(a => a.members.includes(member)).map(a => a.committee)
-    })).sort((a, b) => b.points - a.points);
-  };
+  // بطاقة للجنة واحدة
+  const renderCommitteeCard = (assignment, committeeIndex) => {
+    const level = assignment.members.some(Boolean)
+      ? getMemberLevel(assignment.points)
+      : null;
 
-  const handlePrint = () => window.print();
-
-
-  
-  const toggleCommittee = (index) => {
-    setExpandedCommittees(prev => ({ ...prev, [index]: !prev[index] }));
-  };
-
-  if (isLoading) {
-    return React.createElement('div', { 
-      className: 'container',
-      style: { 
-        display: 'flex', 
-        justifyContent: 'center', 
-        alignItems: 'center', 
-        minHeight: '100vh',
-        flexDirection: 'column',
-        gap: '20px'
-      } 
-    },
-      React.createElement('div', {
-        style: { fontSize: '3em' }
-      }, '⏳'),
-      React.createElement('h2', {
-        style: { color: 'white', textAlign: 'center' }
-      }, 'جاري تحميل البيانات...')
-    );
-  }
-  
-  return React.createElement('div', { className: 'container' }, 
-    // Header
-    React.createElement('div', { className: 'header' },
-      React.createElement('h1', null, '🎓 نظام إدارة اللجان'),
-      React.createElement('p', null, 'منظومة متكاملة لتوزيع أعضاء هيئة التدريس على اللجان')
-    ),
-
-    // Tabs
-    React.createElement('div', { className: 'tabs-container' },
-      React.createElement('button', {
-        className: `tab-button ${activeTab === 'selection' ? 'active' : 'inactive'}`,
-        onClick: () => setActiveTab('selection')
-      }, 'الاختيار'),
-      React.createElement('button', {
-        className: `tab-button ${activeTab === 'members' ? 'active' : 'inactive'}`,
-        onClick: () => setActiveTab('members')
-      }, 'أعضاء هيئة التدريس'),
-      React.createElement('button', {
-        className: `tab-button ${activeTab === 'formation' ? 'active' : 'inactive'}`,
-        onClick: () => setActiveTab('formation')
-      }, 'تشكيل اللجان'),
-      React.createElement('button', {
-        className: `tab-button ${activeTab === 'details' ? 'active' : 'inactive'}`,
-        onClick: () => setActiveTab('details')
-      }, 'تفاصيل اللجان')
-    ),
-
-    // Selection Tab
-    activeTab === 'selection' && React.createElement('div', { className: 'fade-in' },
-      React.createElement('div', { className: 'alert' },
-        React.createElement('h4', null, '⚠️ تعليمات الاختيار:'),
-        React.createElement('ul', null,
-          React.createElement('li', null, 'يمكن للعضو الواحد اختيار عدة لجان'),
-          React.createElement('li', null, React.createElement('strong', null, '8 نقاط أو أكثر = مستوفى'), ' (الحد الأدنى المطلوب)'),
-          React.createElement('li', null, React.createElement('strong', null, '10 نقاط أو أكثر = متقدم'), ' (مستوى جيد)'),
-          React.createElement('li', null, React.createElement('strong', null, '16 نقطة أو أكثر = متميز'), ' (مستوى ممتاز)')
+    return React.createElement('div', { key: committeeIndex, className: 'committee-card' },
+      React.createElement('div', { className: 'committee-header' },
+        React.createElement('h2', { className: 'committee-title' }, assignment.committee),
+        React.createElement('div', { className: 'committee-meta' },
+          React.createElement('span', { className: 'committee-points' }, `النقاط: ${assignment.points}`),
+          React.createElement('span', { className: 'committee-members-count' }, `عدد الأعضاء: ${assignment.memberCount}`)
         )
       ),
 
-      assignments.map((assignment, committeeIndex) =>
-        React.createElement('div', { key: committeeIndex, className: 'committee-card' },
-          React.createElement('div', { className: 'committee-header' },
-            React.createElement('div', { className: 'committee-name' }, COMMITTEES[committeeIndex].name),
-            React.createElement('div', { className: 'committee-info' },
-              React.createElement('div', { className: 'committee-points' }, `النقاط: ${assignment.points}`),
-              React.createElement('div', { className: 'committee-members-count' }, `عدد الأعضاء: ${assignment.memberCount}`)
-            )
-          ),
+      React.createElement('div', { className: 'selection-grid' },
+        Array.from({ length: assignment.memberCount }, (_, slot) => {
+          const member = assignment.members?.[slot] ?? '';
+          const points = member ? getMemberPoints(member) : 0;
+          const mLevel = member ? getMemberLevel(points) : null;
 
-        React.createElement('div', { className: 'selection-grid' },
-  Array.from({ length: assignment.memberCount }, (_, slot) => {
-    const member = assignment.members?.[slot] ?? '';
-    return React.createElement('div', { key: slot, className: 'member-select-wrapper' },
-      React.createElement('label', null, `العضو ${slot + 1}`),
-      React.createElement('select', {
-        value: member,
-        onChange: (e) => handleMemberSelect(committeeIndex, slot, e.target.value),
-        className: 'member-select'
-      },
-        React.createElement('option', { value: '' }, '-- اختر عضو --'),
-        MEMBERS.map(memberName => {
-          const points = getMemberPoints(memberName);
-          const level = getMemberLevel(points);
-          return React.createElement('option', { key: memberName, value: memberName },
-            `${memberName} (${points} نقطة) ${level ? `- ${level.name} ✓` : ''}`
+          return React.createElement('div', { key: slot, className: 'member-select-wrapper' },
+            React.createElement('label', { className: 'member-label' }, `العضو ${slot + 1}`),
+            React.createElement('select', {
+              value: member,
+              onChange: (e) => handleMemberSelect(committeeIndex, slot, e.target.value),
+              className: 'member-select'
+            },
+              React.createElement('option', { value: '' }, '-- اختر عضو --'),
+              MEMBERS.map(memberName => {
+                const mp = getMemberPoints(memberName);
+                const ml = getMemberLevel(mp);
+                const tooltip = `${memberName} (${mp} نقطة)${ml ? ` - ${ml.name}` : ''}`;
+                return React.createElement('option', {
+                  key: memberName,
+                  value: memberName,
+                  title: tooltip
+                }, memberName); // نعرض الاسم فقط لمنع تمدد الخانة
+              })
+            ),
+
+            // شارة تحت الخانة تظهر نقاط/مستوى العضو المختار
+            member && React.createElement('div', {
+              className: `selected-info ${mLevel ? 'level-badge' : 'incomplete'}`,
+              style: mLevel ? { background: mLevel.bgColor, color: '#fff' } : {}
+            }, `إجمالي: ${points} نقطة ${mLevel ? `- ${mLevel.name} ✓` : ''}`)
           );
         })
       ),
-      member && (() => {
-        const points = getMemberPoints(member);
-        const level = getMemberLevel(points);
-        return React.createElement('div', {
-          className: `selected-info ${level ? 'level-badge' : 'incomplete'}`,
-          style: level ? { background: level.bgColor, color: 'white' } : {}
-        }, `إجمالي: ${points} نقطة ${level ? `- ${level.name} ✓` : ''}`);
-      })()
+
+      // زر فتح/إغلاق مهام اللجنة (إن كانت لديك مهام في COMMITTEES)
+      React.createElement('div', { className: 'tasks-toggle' },
+        React.createElement('button', {
+          className: 'secondary-button',
+          onClick: () => setExpandedCommittees(prev => ({
+            ...prev,
+            [committeeIndex]: !prev[committeeIndex]
+          }))
+        }, expandedCommittees[committeeIndex] ? 'إخفاء المهام' : 'عرض المهام')
+      ),
+      expandedCommittees[committeeIndex] && React.createElement('ul', { className: 'tasks-list' },
+        (COMMITTEES[committeeIndex].tasks || []).map((task, i) =>
+          React.createElement('li', { key: i }, task)
+        )
+      )
     );
-  })
-)
+  };
 
+  if (isLoading) {
+    return React.createElement('div', { className: 'loading' }, 'جاري تحميل البيانات...');
+  }
 
-              
-            )
-          )
-        )
-      )
+  // ---------- الواجهة ----------
+  return React.createElement('div', { className: 'container' },
+
+    // رأس الصفحة
+    React.createElement('div', { className: 'header' },
+      React.createElement('h1', null, '🎓 نظام إدارة اللجان'),
+      React.createElement('p', null, 'توزيع أعضاء هيئة التدريس ومزامنة الاختيارات مع الفايربيس')
     ),
 
-    // Members Tab
-    activeTab === 'members' && React.createElement('div', { className: 'fade-in' },
+    // تبويبات بسيطة (اختياري)
+    React.createElement('div', { className: 'tabs-container' },
+      React.createElement('button', {
+        className: `tab-button ${activeTab === 'selection' ? 'active' : ''}`,
+        onClick: () => setActiveTab('selection')
+      }, 'التوزيع'),
+      React.createElement('button', {
+        className: `tab-button ${activeTab === 'overview' ? 'active' : ''}`,
+        onClick: () => setActiveTab('overview')
+      }, 'نظرة عامة')
+    ),
+
+    // تبويب التوزيع
+    activeTab === 'selection' && React.createElement('div', { className: 'fade-in' },
+      assignments.map((a, i) => renderCommitteeCard(a, i))
+    ),
+
+    // تبويب نظرة عامة
+    activeTab === 'overview' && React.createElement('div', { className: 'fade-in' },
       React.createElement('div', { className: 'report-container' },
-        React.createElement('h2', { className: 'report-title' }, '👥 أعضاء هيئة التدريس'),
-        
-        React.createElement('div', { className: 'members-grid' },
-          getMemberStats().map((member, idx) => {
-            const level = getMemberLevel(member.points);
-            return React.createElement('div', {
-              key: idx,
-              className: `member-card ${level ? 'complete' : 'incomplete'}`,
-              style: level ? { 
-                background: level.bgColor.replace('135deg', '155deg'),
-                borderColor: level.borderColor,
-                color: 'white'
-              } : {}
-            },
-              React.createElement('div', { className: 'member-header' },
-                React.createElement('div', {
-                  className: `member-name ${level ? 'complete' : 'incomplete'}`,
-                  style: level ? { color: 'white' } : {}
-                }, member.name),
-                React.createElement('div', {
-                  className: `member-points-badge ${level ? 'complete' : 'incomplete'}`,
-                  style: level ? { 
-                    background: 'rgba(255,255,255,0.3)', 
-                    color: 'white',
-                    border: '2px solid white'
-                  } : {}
-                }, `${member.points} نقطة`)
-              ),
-              
-              level && React.createElement('div', {
-                style: {
-                  marginBottom: '15px',
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '8px',
-                  color: 'white',
-                  fontWeight: '600'
-                }
-              }, `✓ ${level.name}`),
-              
-              member.committees.length > 0 ? React.createElement('div', { className: 'member-committees' },
-                React.createElement('div', { 
-                  className: 'member-committees-title',
-                  style: level ? { color: 'rgba(255,255,255,0.9)' } : {}
-                }, 'اللجان:'),
-                React.createElement('ul', { className: 'member-committees-list' },
-                  member.committees.map((committee, i) =>
-                    React.createElement('li', { 
-                      key: i,
-                      style: level ? { 
-                        background: 'rgba(255,255,255,0.2)',
-                        color: 'white',
-                        border: '1px solid rgba(255,255,255,0.3)'
-                      } : {}
-                    }, committee)
+        React.createElement('h2', null, 'نظرة عامة على التعينات'),
+        MEMBERS.map(name => {
+          const pts = getMemberPoints(name);
+          const lvl = getMemberLevel(pts);
+          const assignedCommittees = assignments
+            .map((a, idx) => ({ idx, name: a.committee, has: a.members.includes(name), points: a.points }))
+            .filter(x => x.has);
+
+          return React.createElement('div', {
+            key: name,
+            className: 'member-summary',
+            style: {
+              borderLeft: `6px solid ${lvl ? lvl.borderColor : '#e5e7eb'}`
+            }
+          },
+            React.createElement('div', { className: 'member-summary-header' },
+              React.createElement('strong', null, name),
+              React.createElement('span', {
+                className: `badge ${lvl ? 'ok' : 'warn'}`,
+                style: lvl ? { background: lvl.bgColor, color: '#fff' } : {}
+              }, `${pts} نقطة ${lvl ? `- ${lvl.name}` : ''}`)
+            ),
+            assignedCommittees.length
+              ? React.createElement('ul', { className: 'member-summary-list' },
+                  assignedCommittees.map(c =>
+                    React.createElement('li', { key: c.idx }, `${c.name} (+${c.points})`)
                   )
                 )
-              ) : React.createElement('div', { 
-                className: 'no-committees',
-                style: level ? { color: 'rgba(255,255,255,0.8)' } : {}
-              }, 'لم يتم التعيين في أي لجنة')
-            );
-          })
-        )
-      )
-    ),
-
-    // Formation Tab
-    activeTab === 'formation' && React.createElement('div', { className: 'fade-in' },
-      React.createElement('div', { className: 'report-container' },
-        React.createElement('div', { className: 'report-header' },
-          React.createElement('h2', { className: 'report-title' }, '📊 تقرير تشكيل اللجان'),
-          React.createElement('button', {
-            onClick: handlePrint,
-            className: 'print-button'
-          }, '🖨️ طباعة التقرير')
-        ),
-
-        React.createElement('div', { className: 'report-content' },
-          React.createElement('h1', null, 'تقرير تشكيل اللجان'),
-          React.createElement('p', null, 'للعام الجامعي 1446هـ'),
-          React.createElement('p', { style: { fontSize: '0.9em', color: '#999' } },
-            `تاريخ الإصدار: ${new Date().toLocaleDateString('ar-SA')}`
-          )
-        ),
-
-        COMMITTEES.map((committee, idx) => {
-          const assignment = assignments[idx];
-          const hasMembers = assignment.members.some(m => m);
-          if (!hasMembers) return null;
-          
-          return React.createElement('div', { key: idx, className: 'report-section' },
-            React.createElement('h3', null, committee.name),
-            
-            React.createElement('div', { className: 'report-info' },
-              React.createElement('div', { className: 'report-info-item' },
-                React.createElement('span', { className: 'report-info-label' }, 'عدد الأعضاء:'),
-                React.createElement('span', { className: 'report-info-value' }, `${committee.members} أعضاء`)
-              ),
-              React.createElement('div', { className: 'report-info-item' },
-                React.createElement('span', { className: 'report-info-label' }, 'النقاط:'),
-                React.createElement('span', { className: 'report-info-value' }, `${committee.points} نقطة`)
-              )
-            ),
-            
-            React.createElement('div', null,
-              React.createElement('div', { className: 'report-members-title' }, 'أعضاء اللجنة:'),
-              assignment.members.map((member, i) => member && (() => {
-                const level = getMemberLevel(getMemberPoints(member));
-                return React.createElement('div', {
-                  key: i,
-                  className: 'report-member',
-                  style: { justifyContent: 'space-between' }
-                },
-                  React.createElement('div', { style: { display: 'flex', alignItems: 'center', gap: '15px' } },
-                    React.createElement('div', { className: 'report-member-number' }, i + 1),
-                    React.createElement('div', { className: 'report-member-name' }, member)
-                  ),
-                  level && React.createElement('span', {
-                    style: {
-                      fontSize: '0.75em',
-                      background: level.bgColor,
-                      color: 'white',
-                      padding: '6px 12px',
-                      borderRadius: '15px',
-                      fontWeight: '600'
-                    }
-                  }, `${level.name} ✓`)
-                );
-              })())
-            )
+              : React.createElement('div', { className: 'no-committees' }, 'لم يتم التعيين بعد')
           );
-        }),
-
-        React.createElement('div', { className: 'stats-summary' },
-          React.createElement('h3', null, 'ملخص إحصائي'),
-          React.createElement('div', { className: 'stats-grid', style: { gridTemplateColumns: 'repeat(4, 1fr)' } },
-            React.createElement('div', { className: 'stat-box blue' },
-              React.createElement('div', { className: 'stat-number' }, COMMITTEES.length),
-              React.createElement('div', { className: 'stat-label' }, 'إجمالي اللجان')
-            ),
-            React.createElement('div', { className: 'stat-box green' },
-              React.createElement('div', { className: 'stat-number' }, 
-                getMemberStats().filter(m => getMemberLevel(m.points)?.name === 'مستوفى').length
-              ),
-              React.createElement('div', { className: 'stat-label' }, 'مستوفى (8+)')
-            ),
-            React.createElement('div', { className: 'stat-box blue' },
-              React.createElement('div', { className: 'stat-number' }, 
-                getMemberStats().filter(m => getMemberLevel(m.points)?.name === 'متقدم').length
-              ),
-              React.createElement('div', { className: 'stat-label' }, 'متقدم (10+)')
-            ),
-            React.createElement('div', { className: 'stat-box purple' },
-              React.createElement('div', { className: 'stat-number' }, 
-                getMemberStats().filter(m => getMemberLevel(m.points)?.name === 'متميز').length
-              ),
-              React.createElement('div', { className: 'stat-label' }, 'متميز (16+)')
-            )
-          )
-        )
-      )
-    ),
-
-    // Details Tab
-    activeTab === 'details' && React.createElement('div', { className: 'fade-in' },
-      React.createElement('div', { className: 'report-container' },
-        React.createElement('h2', { className: 'report-title' }, '📋 تفاصيل اللجان'),
-        
-        React.createElement('div', { style: { marginTop: '30px' } },
-          COMMITTEES.map((committee, idx) =>
-            React.createElement('div', {
-              key: idx,
-              style: {
-                border: '2px solid #e5e7eb',
-                borderRadius: '12px',
-                overflow: 'hidden',
-                marginBottom: '16px'
-              }
-            },
-              React.createElement('div', {
-                style: {
-                  background: 'linear-gradient(to right, #eef2ff, #dbeafe)',
-                  padding: '16px',
-                  cursor: 'pointer'
-                },
-                onClick: () => toggleCommittee(idx)
-              },
-                React.createElement('div', {
-                  style: {
-                    display: 'flex',
-                    justifyContent: 'space-between',
-                    alignItems: 'start',
-                    marginBottom: '8px'
-                  }
-                },
-                  React.createElement('h3', {
-                    style: {
-                      fontWeight: 'bold',
-                      fontSize: '1.1em',
-                      color: '#333',
-                      flex: 1
-                    }
-                  }, committee.name),
-                  React.createElement('span', {
-                    style: {
-                      fontSize: '0.85em',
-                      background: '#667eea',
-                      color: 'white',
-                      padding: '4px 12px',
-                      borderRadius: '12px',
-                      fontWeight: '600'
-                    }
-                  }, `${committee.points} نقطة`)
-                ),
-                React.createElement('p', {
-                  style: {
-                    fontSize: '0.9em',
-                    color: '#555',
-                    marginBottom: '12px'
-                  }
-                }, committee.mainTask),
-                React.createElement('button', {
-                  style: {
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: '8px',
-                    color: '#667eea',
-                    fontWeight: '600',
-                    fontSize: '0.9em',
-                    background: 'none',
-                    border: 'none',
-                    cursor: 'pointer'
-                  }
-                },
-                  expandedCommittees[idx] ? '▲ إخفاء التفاصيل' : '▼ عرض التفاصيل'
-                )
-              ),
-              
-              expandedCommittees[idx] && React.createElement('div', {
-                style: { padding: '16px', background: 'white' }
-              },
-                React.createElement('h4', {
-                  style: {
-                    fontWeight: '600',
-                    color: '#555',
-                    marginBottom: '12px'
-                  }
-                }, 'المهام التفصيلية:'),
-                React.createElement('ul', { style: { listStyle: 'none', padding: 0 } },
-                  committee.tasks.map((task, taskIdx) =>
-                    React.createElement('li', {
-                      key: taskIdx,
-                      style: {
-                        display: 'flex',
-                        gap: '12px',
-                        marginBottom: '12px',
-                        padding: '8px',
-                        background: '#f9fafb',
-                        borderRadius: '6px',
-                        fontSize: '0.9em',
-                        lineHeight: '1.6'
-                      }
-                    },
-                      React.createElement('span', {
-                        style: {
-                          color: '#667eea',
-                          fontWeight: 'bold',
-                          flexShrink: 0
-                        }
-                      }, `${taskIdx + 1}.`),
-                      React.createElement('span', null, task)
-                    )
-                  )
-                )
-              )
-            )
-          )
-        )
+        })
       )
     )
   );
 }
 
-// Safe initialization
+// تشغيل التطبيق بأمان
 try {
-  const rootElement = document.getElementById('root');
-  if (rootElement) {
-    const root = ReactDOM.createRoot(rootElement);
+  const rootEl = document.getElementById('root');
+  if (rootEl && ReactDOM?.createRoot) {
+    const root = ReactDOM.createRoot(rootEl);
     root.render(React.createElement(CommitteeManager));
+  } else if (rootEl) {
+    // توافق مع ReactDOM القديم
+    ReactDOM.render(React.createElement(CommitteeManager), rootEl);
   } else {
     console.error('Root element not found');
   }
-} catch (error) {
-  console.error('Error initializing app:', error);
-  document.body.innerHTML = '<div style="padding: 20px; text-align: center; font-family: Arial;"><h2>حدث خطأ في تحميل التطبيق</h2><p>الرجاء تحديث الصفحة</p></div>';
+} catch (err) {
+  console.error('Error initializing app:', err);
+  document.body.innerHTML =
+    '<div style="padding:24px; font-family:sans-serif; direction:rtl; text-align:center">' +
+    '<h2>حدث خطأ في تحميل التطبيق</h2><p>الرجاء تحديث الصفحة</p></div>';
 }
+
