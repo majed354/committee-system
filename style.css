@@ -1,23 +1,23 @@
+/* --- استيراد الخطوط من Google Fonts --- */
+@import url('https://fonts.googleapis.com/css2?family=Readex+Pro:wght@300;400;500;600;700&family=Tajawal:wght@300;400;500;700;800&display=swap');
+
 /* --- القسم الأول: إعادة الضبط العامة والأنماط الأساسية (Global Resets & Base Styles) --- */
-/* إعادة تعيين الهوامش والحشو الافتراضية لجميع العناصر */
 * {
     margin: 0;
     padding: 0;
-    box-sizing: border-box; /* يضمن أن الحجم يشمل الحواف والحشو */
+    box-sizing: border-box;
 }
 
-/* أنماط العنصر `body` الرئيسي */
 body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif, 'Arial';
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); /* خلفية متدرجة جذابة */
-    min-height: 100vh; /* يضمن أن الخلفية تملأ الشاشة بالكامل */
+    font-family: 'Tajawal', 'Readex Pro', 'Segoe UI', sans-serif;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
     padding: 20px;
 }
 
-/* الحاوية الرئيسية للتطبيق */
 .container {
     max-width: 1400px;
-    margin: 0 auto; /* توسيط الحاوية في الصفحة */
+    margin: 0 auto;
 }
 
 
@@ -27,33 +27,35 @@ body {
     border-radius: 15px;
     padding: 30px;
     margin-bottom: 30px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.2); /* ظل لإعطاء عمق */
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
     text-align: center;
 }
 
 .header h1 {
+    font-family: 'Tajawal', sans-serif;
     color: #333;
     font-size: 2.5em;
     margin-bottom: 10px;
+    font-weight: 700;
 }
 
 .header p {
+    font-family: 'Readex Pro', sans-serif;
     color: #666;
     font-size: 1.1em;
+    font-weight: 400;
 }
 
 
 /* --- القسم الثالث: أنماط أزرار التبويبات (Tabs Styles) --- */
-/* حاوية أزرار التبويبات */
 .tabs-container {
     display: flex;
-    gap: 10px; /* مسافة بين الأزرار */
+    gap: 10px;
     margin-bottom: 30px;
-    overflow-x: auto; /* يسمح بالتمرير الأفقي على الشاشات الصغيرة */
+    overflow-x: auto;
     padding-bottom: 10px;
 }
 
-/* زر التبويب الفردي */
 .tab-button {
     display: flex;
     align-items: center;
@@ -61,14 +63,14 @@ body {
     padding: 15px 25px;
     border: none;
     border-radius: 12px 12px 0 0;
+    font-family: 'Tajawal', sans-serif;
     font-size: 1em;
     font-weight: 600;
     cursor: pointer;
-    transition: all 0.3s; /* تأثير انتقال ناعم */
-    white-space: nowrap; /* يمنع انكسار النص في الزر */
+    transition: all 0.3s;
+    white-space: nowrap;
 }
 
-/* نمط الزر النشط */
 .tab-button.active {
     background: white;
     color: #667eea;
@@ -76,13 +78,11 @@ body {
     border-bottom: 3px solid #667eea;
 }
 
-/* نمط الزر غير النشط */
 .tab-button.inactive {
     background: rgba(255,255,255,0.7);
     color: #555;
 }
 
-/* تأثير عند مرور الماوس على الزر غير النشط */
 .tab-button.inactive:hover {
     background: rgba(255,255,255,0.9);
 }
@@ -91,30 +91,32 @@ body {
 /* --- القسم الرابع: أنماط صندوق التنبيهات (Alert Box) --- */
 .alert {
     background: #e3f2fd;
-    border-right: 4px solid #2196f3; /* شريط جانبي للتمييز */
+    border-right: 4px solid #2196f3;
     padding: 20px;
     border-radius: 8px;
     margin-bottom: 30px;
 }
 
 .alert h4 {
+    font-family: 'Tajawal', sans-serif;
     color: #1565c0;
     font-size: 1.1em;
     margin-bottom: 10px;
+    font-weight: 600;
 }
 
 .alert ul {
-    list-style: none; /* إزالة النقاط الافتراضية للقائمة */
+    list-style: none;
     padding-right: 20px;
 }
 
 .alert li {
+    font-family: 'Readex Pro', sans-serif;
     color: #1565c0;
     margin-bottom: 8px;
     position: relative;
 }
 
-/* إضافة نقطة مخصصة بجانب كل عنصر في القائمة */
 .alert li:before {
     content: "•";
     position: absolute;
@@ -134,11 +136,10 @@ body {
 }
 
 .committee-card:hover {
-    transform: translateY(-3px); /* تأثير رفع البطاقة عند المرور */
+    transform: translateY(-3px);
     box-shadow: 0 10px 25px rgba(0,0,0,0.15);
 }
 
-/* رأس بطاقة اللجنة */
 .committee-header {
     border-bottom: 2px solid #f0f0f0;
     padding-bottom: 15px;
@@ -146,15 +147,17 @@ body {
 }
 
 .committee-name {
+    font-family: 'Tajawal', sans-serif;
     color: #333;
     font-size: 1.3em;
-    font-weight: bold;
+    font-weight: 700;
     margin-bottom: 10px;
 }
 
 .committee-info {
     display: flex;
     gap: 20px;
+    font-family: 'Readex Pro', sans-serif;
     font-size: 0.95em;
 }
 
@@ -169,54 +172,55 @@ body {
 
 
 /* --- القسم السادس: أنماط شبكة اختيار الأعضاء (Selection Grid) --- */
-/* الشبكة التي تحتوي على قوائم اختيار الأعضاء */
 .selection-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); /* تصميم متجاوب */
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
     gap: 15px;
+    align-items: start;
 }
 
-/* حاوية كل قائمة اختيار مع التسمية الخاصة بها */
 .member-select-wrapper {
     display: flex;
     flex-direction: column;
+    min-width: 0;
 }
 
 .member-select-wrapper label {
+    font-family: 'Tajawal', sans-serif;
     font-weight: 600;
     margin-bottom: 8px;
     color: #555;
     font-size: 0.95em;
 }
 
-/* قائمة الاختيار المنسدلة */
 .member-select {
     padding: 12px;
     border: 2px solid #ddd;
     border-radius: 8px;
+    font-family: 'Readex Pro', sans-serif;
     font-size: 1em;
     background: white;
     cursor: pointer;
     transition: all 0.3s;
+    width: 100%;
+    max-width: 100%;
 }
 
-/* تأثير التركيز (focus) على قائمة الاختيار */
 .member-select:focus {
     outline: none;
     border-color: #667eea;
     box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
 }
 
-/* نمط الخيارات المعطلة */
 .member-select option:disabled {
     color: #999;
 }
 
-/* معلومات العضو المختار (النقاط والمستوى) */
 .selected-info {
     margin-top: 8px;
     padding: 8px 12px;
     border-radius: 20px;
+    font-family: 'Readex Pro', sans-serif;
     font-size: 0.85em;
     font-weight: 600;
     text-align: center;
@@ -232,7 +236,6 @@ body {
     color: #666;
 }
 
-/* نمط شارة المستوى (متميز، متقدم، ...) */
 .selected-info.level-badge {
     color: white !important;
     font-weight: 600;
@@ -246,7 +249,6 @@ body {
     gap: 20px;
 }
 
-/* بطاقة العضو الفردية */
 .member-card {
     padding: 20px;
     border-radius: 12px;
@@ -277,7 +279,8 @@ body {
 }
 
 .member-name {
-    font-weight: bold;
+    font-family: 'Tajawal', sans-serif;
+    font-weight: 700;
     font-size: 1.1em;
 }
 
@@ -287,7 +290,8 @@ body {
 .member-points-badge {
     padding: 6px 12px;
     border-radius: 20px;
-    font-weight: bold;
+    font-family: 'Readex Pro', sans-serif;
+    font-weight: 700;
     font-size: 0.85em;
 }
 
@@ -306,6 +310,7 @@ body {
 }
 
 .member-committees-title {
+    font-family: 'Tajawal', sans-serif;
     font-size: 0.85em;
     font-weight: 600;
     color: #666;
@@ -317,6 +322,7 @@ body {
 }
 
 .member-committees-list li {
+    font-family: 'Readex Pro', sans-serif;
     font-size: 0.8em;
     background: white;
     padding: 6px 10px;
@@ -325,8 +331,8 @@ body {
     color: #555;
 }
 
-/* نص يظهر في حال عدم اختيار لجان للعضو */
 .no-committees {
+    font-family: 'Readex Pro', sans-serif;
     font-size: 0.85em;
     color: #999;
     font-style: italic;
@@ -334,7 +340,6 @@ body {
 
 
 /* --- القسم الثامن: أنماط تبويب اللجان (Committees Tab) --- */
-/* (ملاحظة: هذه الأنماط قد لا تكون مستخدمة في الواجهة الحالية ولكنها موجودة هنا) */
 .committees-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
@@ -355,7 +360,8 @@ body {
 }
 
 .committee-title {
-    font-weight: bold;
+    font-family: 'Tajawal', sans-serif;
+    font-weight: 700;
     color: #333;
     margin-bottom: 15px;
     font-size: 1.05em;
@@ -370,6 +376,7 @@ body {
 .stat-badge {
     padding: 6px 12px;
     border-radius: 15px;
+    font-family: 'Readex Pro', sans-serif;
     font-size: 0.85em;
     font-weight: 600;
 }
@@ -383,6 +390,7 @@ body {
 }
 
 .committee-member-item {
+    font-family: 'Readex Pro', sans-serif;
     background: white;
     padding: 10px 12px;
     margin-bottom: 8px;
@@ -392,8 +400,7 @@ body {
 }
 
 
-/* --- القسم التاسع: أنماط تبويب التقارير (Reports Tab) --- */
-/* حاوية التقرير */
+/* --- القسم التاسع: أنماط تبويب اللجان المشكَّلة (Formation Tab) --- */
 .report-container {
     background: white;
     border-radius: 15px;
@@ -401,7 +408,6 @@ body {
     box-shadow: 0 5px 15px rgba(0,0,0,0.1);
 }
 
-/* رأس التقرير (العنوان وزر الطباعة) */
 .report-header {
     display: flex;
     justify-content: space-between;
@@ -412,18 +418,19 @@ body {
 }
 
 .report-title {
+    font-family: 'Tajawal', sans-serif;
     font-size: 2em;
-    font-weight: bold;
+    font-weight: 700;
     color: #333;
 }
 
-/* زر الطباعة */
 .print-button {
     background: #667eea;
     color: white;
     padding: 12px 25px;
     border: none;
     border-radius: 8px;
+    font-family: 'Tajawal', sans-serif;
     font-size: 1em;
     font-weight: 600;
     cursor: pointer;
@@ -439,172 +446,324 @@ body {
     box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
 }
 
-/* محتوى التقرير الرئيسي */
-.report-content {
-    text-align: center;
-    margin-bottom: 40px;
-}
-
-.report-content h1 {
-    font-size: 2.5em;
-    color: #333;
-    margin-bottom: 10px;
-}
-
-.report-content p {
-    color: #666;
-    margin: 5px 0;
-}
-
-/* قسم منفصل داخل التقرير */
-.report-section {
-    margin-bottom: 30px;
-    border: 2px solid #e0e0e0;
-    border-radius: 12px;
-    padding: 25px;
-    break-inside: avoid; /* لمنع كسر القسم عند الطباعة */
-}
-
-.report-section h3 {
-    font-size: 1.4em;
-    color: #333;
-    margin-bottom: 20px;
-    padding-bottom: 10px;
-    border-bottom: 3px solid #667eea;
-}
-
-.report-info {
+/* البطاقات المضغوطة للجان */
+.committees-compact-grid {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 15px;
-    margin-bottom: 20px;
-    font-size: 0.95em;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 16px;
+    margin-top: 20px;
 }
 
-.report-info-item {
+.committee-card-compact {
+    border: 2px solid;
+    border-radius: 12px;
+    padding: 16px;
+    transition: all 0.3s;
+    break-inside: avoid;
+}
+
+.committee-card-compact.complete {
+    background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+    border-color: #0ea5e9;
+}
+
+.committee-card-compact.incomplete {
+    background: linear-gradient(135deg, #fafafa 0%, #f5f5f5 100%);
+    border-color: #d1d5db;
+    opacity: 0.7;
+}
+
+.committee-card-compact:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.committee-compact-header {
     display: flex;
+    justify-content: space-between;
+    align-items: start;
     gap: 10px;
+    margin-bottom: 12px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid rgba(0,0,0,0.1);
 }
 
-.report-info-label {
-    font-weight: 600;
-    color: #555;
+.committee-compact-name {
+    font-family: 'Tajawal', sans-serif;
+    font-weight: 700;
+    font-size: 0.95em;
+    line-height: 1.3;
+    flex: 1;
 }
 
-.report-info-value {
-    color: #666;
+.committee-card-compact.complete .committee-compact-name {
+    color: #0c4a6e;
 }
 
-.report-members-title {
-    font-weight: 600;
-    color: #555;
-    margin-bottom: 15px;
+.committee-card-compact.incomplete .committee-compact-name {
+    color: #6b7280;
 }
 
-/* عنصر العضو في قائمة التقرير */
-.report-member {
+.committee-compact-points {
+    background: rgba(102, 126, 234, 0.15);
+    color: #667eea;
+    padding: 4px 10px;
+    border-radius: 12px;
+    font-family: 'Readex Pro', sans-serif;
+    font-size: 0.8em;
+    font-weight: 700;
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+
+.committee-compact-members {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.committee-compact-member {
     display: flex;
     align-items: center;
-    gap: 15px;
-    background: #f9f9f9;
-    padding: 15px;
-    margin-bottom: 10px;
-    border-radius: 8px;
+    gap: 8px;
+    font-size: 0.85em;
+    padding: 6px 8px;
+    border-radius: 6px;
+    background: white;
 }
 
-.report-member-number {
+.committee-card-compact.incomplete .committee-compact-member {
+    background: rgba(255,255,255,0.5);
+}
+
+.member-compact-number {
     background: #667eea;
     color: white;
-    width: 35px;
-    height: 35px;
+    width: 22px;
+    height: 22px;
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-weight: bold;
+    font-family: 'Readex Pro', sans-serif;
+    font-size: 0.75em;
+    font-weight: 700;
     flex-shrink: 0;
 }
 
-.report-member-name {
-    color: #333;
-    font-weight: 500;
+.committee-card-compact.incomplete .member-compact-number {
+    background: #9ca3af;
 }
 
-/* --- القسم العاشر: أنماط ملخص الإحصائيات (Statistics Summary) --- */
+.member-compact-name {
+    font-family: 'Readex Pro', sans-serif;
+    font-weight: 500;
+    flex: 1;
+}
+
+.committee-card-compact.complete .member-compact-name {
+    color: #1e293b;
+}
+
+.committee-card-compact.incomplete .member-compact-name {
+    color: #9ca3af;
+    font-style: italic;
+}
+
+/* حالة اللجنة غير المكتملة */
+.incomplete-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    background: #fef3c7;
+    color: #92400e;
+    padding: 4px 10px;
+    border-radius: 12px;
+    font-family: 'Tajawal', sans-serif;
+    font-size: 0.75em;
+    font-weight: 600;
+    margin-top: 8px;
+}
+
+/* صندوق الإحصاءات */
 .stats-summary {
-    margin-top: 50px;
-    padding-top: 30px;
-    border-top: 2px solid #e0e0e0;
+    margin-top: 40px;
+    margin-bottom: 30px;
+    padding: 25px;
+    background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+    border-radius: 12px;
+    border: 2px solid #cbd5e1;
 }
 
 .stats-summary h3 {
-    font-size: 1.5em;
-    color: #333;
-    margin-bottom: 25px;
-}
-
-/* شبكة صناديق الإحصائيات */
-.stats-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 20px;
-    margin-bottom: 30px;
-}
-
-.stat-box {
-    padding: 25px;
-    border-radius: 12px;
+    font-family: 'Tajawal', sans-serif;
+    font-size: 1.4em;
+    font-weight: 700;
+    color: #334155;
+    margin-bottom: 20px;
     text-align: center;
 }
 
-.stat-box.blue { background: #e3f2fd; }
-.stat-box.green { background: #c8e6c9; }
-.stat-box.purple { background: #e1bee7; }
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 15px;
+}
+
+.stat-box {
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+    border: 2px solid;
+}
+
+.stat-box.blue { 
+    background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
+    border-color: #3b82f6;
+}
+
+.stat-box.green { 
+    background: linear-gradient(135deg, #dcfce7 0%, #bbf7d0 100%);
+    border-color: #22c55e;
+}
+
+.stat-box.purple { 
+    background: linear-gradient(135deg, #f3e8ff 0%, #e9d5ff 100%);
+    border-color: #a855f7;
+}
+
+.stat-box.orange { 
+    background: linear-gradient(135deg, #fed7aa 0%, #fdba74 100%);
+    border-color: #f97316;
+}
 
 .stat-number {
-    font-size: 3em;
-    font-weight: bold;
-    margin-bottom: 10px;
+    font-family: 'Readex Pro', sans-serif;
+    font-size: 2.5em;
+    font-weight: 800;
+    margin-bottom: 8px;
 }
 
-.stat-box.blue .stat-number { color: #1976d2; }
-.stat-box.green .stat-number { color: #388e3c; }
-.stat-box.purple .stat-number { color: #7b1fa2; }
+.stat-box.blue .stat-number { color: #1e40af; }
+.stat-box.green .stat-number { color: #15803d; }
+.stat-box.purple .stat-number { color: #7e22ce; }
+.stat-box.orange .stat-number { color: #c2410c; }
 
 .stat-label {
-    font-size: 0.9em;
-    color: #666;
+    font-family: 'Tajawal', sans-serif;
+    font-size: 0.85em;
+    font-weight: 600;
+    color: #475569;
 }
 
 
-/* --- القسم الحادي عشر: أنماط الطباعة (Print Styles) --- */
+/* --- القسم العاشر: أنماط الطباعة (Print Styles) --- */
 @media print {
     body {
         background: white !important;
         padding: 0 !important;
     }
     
-    /* إخفاء العناصر غير المرغوب فيها عند الطباعة */
     .tabs-container,
-    .report-header,
+    .print-button,
     .header {
         display: none !important;
     }
     
     .report-container {
         box-shadow: none !important;
-        padding: 0 !important;
+        padding: 10px !important;
     }
     
-    .report-section {
+    .report-header {
+        margin-bottom: 15px !important;
+        padding-bottom: 10px !important;
+    }
+    
+    .report-title {
+        font-size: 1.5em !important;
+        margin-bottom: 10px !important;
+    }
+    
+    .stats-summary {
+        margin-top: 15px !important;
+        margin-bottom: 15px !important;
+        padding: 15px !important;
+        page-break-inside: avoid;
+    }
+    
+    .stats-summary h3 {
+        font-size: 1.1em !important;
+        margin-bottom: 10px !important;
+    }
+    
+    .stats-grid {
+        grid-template-columns: repeat(4, 1fr) !important;
+        gap: 8px !important;
+    }
+    
+    .stat-box {
+        padding: 10px !important;
+        border-width: 1px !important;
+    }
+    
+    .stat-number {
+        font-size: 1.8em !important;
+        margin-bottom: 4px !important;
+    }
+    
+    .stat-label {
+        font-size: 0.7em !important;
+    }
+    
+    .committees-compact-grid {
+        grid-template-columns: repeat(3, 1fr) !important;
+        gap: 10px !important;
+        margin-top: 10px !important;
+    }
+    
+    .committee-card-compact {
+        padding: 10px !important;
         break-inside: avoid;
         page-break-inside: avoid;
-        border-color: #666 !important;
+    }
+    
+    .committee-compact-header {
+        margin-bottom: 8px !important;
+        padding-bottom: 6px !important;
+    }
+    
+    .committee-compact-name {
+        font-size: 0.75em !important;
+        line-height: 1.2 !important;
+    }
+    
+    .committee-compact-points {
+        font-size: 0.65em !important;
+        padding: 2px 6px !important;
+    }
+    
+    .committee-compact-member {
+        font-size: 0.7em !important;
+        padding: 4px 6px !important;
+        gap: 6px !important;
+    }
+    
+    .member-compact-number {
+        width: 18px !important;
+        height: 18px !important;
+        font-size: 0.65em !important;
+    }
+    
+    .incomplete-badge {
+        font-size: 0.65em !important;
+        padding: 2px 6px !important;
+        margin-top: 4px !important;
     }
 }
 
 
-/* --- القسم الثاني عشر: أنماط التجاوب مع الشاشات الصغيرة (Mobile Responsive) --- */
+/* --- القسم الحادي عشر: أنماط التجاوب مع الشاشات الصغيرة (Mobile Responsive) --- */
 @media (max-width: 768px) {
     body {
         padding: 10px;
@@ -616,23 +775,25 @@ body {
     .tabs-container { gap: 5px; }
     .tab-button { padding: 12px 15px; font-size: 0.9em; }
     
-    /* تحويل الشبكات إلى عمود واحد على الشاشات الصغيرة */
     .selection-grid,
     .members-grid,
-    .committees-grid,
+    .committees-compact-grid,
     .stats-grid {
-        grid-template-columns: 1fr;
+        grid-template-columns: 1fr !important;
     }
     
     .committee-card { padding: 15px; }
     .report-title { font-size: 1.5em; }
-    .report-content h1 { font-size: 1.8em; }
-    .report-info { grid-template-columns: 1fr; }
+}
+
+@media (min-width: 760px) {
+    .selection-grid {
+        grid-template-columns: repeat(2, minmax(280px, 1fr));
+    }
 }
 
 
-/* --- القسم الثالث عشر: أنماط إضافية ومساعدة (Utilities & Miscellaneous) --- */
-/* 13.1: أنماط شريط التمرير */
+/* --- القسم الثاني عشر: أنماط إضافية ومساعدة (Utilities & Miscellaneous) --- */
 ::-webkit-scrollbar {
     width: 8px;
     height: 8px;
@@ -652,7 +813,6 @@ body {
     background: #5568d3;
 }
 
-/* 13.2: أنماط التحريك والانتقالات */
 .fade-in {
     animation: fadeIn 0.3s ease-in;
 }
@@ -668,7 +828,6 @@ body {
     }
 }
 
-/* 13.3: أصناف الألوان المساعدة */
 .text-success { color: #4caf50; }
 .text-warning { color: #ff9800; }
 .text-info { color: #2196f3; }
@@ -677,23 +836,13 @@ body {
 .bg-warning-light { background-color: #ffe0b2; }
 .bg-info-light { background-color: #e3f2fd; }
 
-
-/* --- القسم الرابع عشر: إصلاحات سريعة (Hotfixes) --- */
-/* إصلاح مشكلة تمدد خانة العضو الأول في شبكة الاختيار */
-.selection-grid {
-  align-items: start; /* يمنع شد العناصر طولياً */
-}
-
-.member-select-wrapper {
-  min-width: 0; /* مهم جدًا داخل Grid لمنع تمدد العمود */
-}
-
-.member-select {
-  width: 100%; /* يجعل قائمة الاختيار تملأ عمودها فقط */
-  max-width: 100%;
-}
-@media (min-width: 760px) {
-  .selection-grid {
-    grid-template-columns: repeat(2, minmax(280px, 1fr));
-  }
+.loading {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    font-family: 'Tajawal', sans-serif;
+    font-size: 1.5em;
+    color: white;
+    font-weight: 600;
 }
