@@ -509,43 +509,72 @@ function CommitteeManager() {
   const [activeTab, setActiveTab] = useState('selection');
   const [expandedCommittees, setExpandedCommittees] = useState({});
   const [assignments, setAssignments] = useState(() => {
-    const saved = localStorage.getItem('committeeAssignments');
-    return saved ? JSON.parse(saved) : COMMITTEES.map(c => ({ 
-      committee: c.name, 
-      points: c.points,
-      memberCount: c.members,
-      members: Array(c.members).fill('') 
-    }));
+    try {
+      const saved = localStorage.getItem('committeeAssignments');
+      return saved ? JSON.parse(saved) : COMMITTEES.map(c => ({ 
+        committee: c.name, 
+        points: c.points,
+        memberCount: c.members,
+        members: Array(c.members).fill('') 
+      }));
+    } catch (error) {
+      console.error('Error loading from localStorage:', error);
+      return COMMITTEES.map(c => ({ 
+        committee: c.name, 
+        points: c.points,
+        memberCount: c.members,
+        members: Array(c.members).fill('') 
+      }));
+    }
   });
 
-  // Firebase integration
+  // Save to localStorage and Firebase (if available)
   useEffect(() => {
-    // Save to localStorage
-    localStorage.setItem('committeeAssignments', JSON.stringify(assignments));
-    
-    // Save to Firebase if available
-    if (window.firebase && window.firebase.database) {
-      const db = window.firebase.database();
-      db.ref('assignments').set(assignments).catch(err => {
-        console.error('Firebase save error:', err);
-      });
+    try {
+      localStorage.setItem('committeeAssignments', JSON.stringify(assignments));
+      
+      // Try Firebase only if it's available
+      if (typeof window !== 'undefined' && window.firebase && window.firebase.database) {
+        try {
+          const db = window.firebase.database();
+          db.ref('assignments').set(assignments).catch(err => {
+            console.log('Firebase save error (non-critical):', err.message);
+          });
+        } catch (fbError) {
+          console.log('Firebase not fully initialized (non-critical):', fbError.message);
+        }
+      }
+    } catch (error) {
+      console.error('Error saving data:', error);
     }
   }, [assignments]);
 
-  // Listen for Firebase changes
+  // Listen for Firebase changes (if available)
   useEffect(() => {
-    if (window.firebase && window.firebase.database) {
-      const db = window.firebase.database();
-      const assignmentsRef = db.ref('assignments');
-      
-      assignmentsRef.on('value', (snapshot) => {
-        const data = snapshot.val();
-        if (data) {
-          setAssignments(data);
-        }
-      });
+    if (typeof window !== 'undefined' && window.firebase && window.firebase.database) {
+      try {
+        const db = window.firebase.database();
+        const assignmentsRef = db.ref('assignments');
+        
+        const listener = assignmentsRef.on('value', (snapshot) => {
+          const data = snapshot.val();
+          if (data && Array.isArray(data)) {
+            setAssignments(data);
+          }
+        }, (error) => {
+          console.log('Firebase listener error (non-critical):', error.message);
+        });
 
-      return () => assignmentsRef.off('value');
+        return () => {
+          try {
+            assignmentsRef.off('value', listener);
+          } catch (error) {
+            console.log('Error removing Firebase listener:', error.message);
+          }
+        };
+      } catch (fbError) {
+        console.log('Firebase not available (non-critical):', fbError.message);
+      }
     }
   }, []);
 
@@ -968,5 +997,16 @@ function CommitteeManager() {
   );
 }
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
-root.render(React.createElement(CommitteeManager));
+// Safe initialization
+try {
+  const rootElement = document.getElementById('root');
+  if (rootElement) {
+    const root = ReactDOM.createRoot(rootElement);
+    root.render(React.createElement(CommitteeManager));
+  } else {
+    console.error('Root element not found');
+  }
+} catch (error) {
+  console.error('Error initializing app:', error);
+  document.body.innerHTML = '<div style="padding: 20px; text-align: center; font-family: Arial;"><h2>حدث خطأ في تحميل التطبيق</h2><p>الرجاء تحديث الصفحة</p></div>';
+}
