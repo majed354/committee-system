@@ -508,48 +508,63 @@ const MEMBERS = [
 function CommitteeManager() {
   const [activeTab, setActiveTab] = useState('selection');
   const [expandedCommittees, setExpandedCommittees] = useState({});
-  const [assignments, setAssignments] = useState(() => {
-    try {
-      const saved = localStorage.getItem('committeeAssignments');
-      return saved ? JSON.parse(saved) : COMMITTEES.map(c => ({ 
-        committee: c.name, 
-        points: c.points,
-        memberCount: c.members,
-        members: Array(c.members).fill('') 
-      }));
-    } catch (error) {
-      console.error('Error loading from localStorage:', error);
-      return COMMITTEES.map(c => ({ 
-        committee: c.name, 
-        points: c.points,
-        memberCount: c.members,
-        members: Array(c.members).fill('') 
-      }));
-    }
-  });
+  const [assignments, setAssignments] = useState(
+    COMMITTEES.map(c => ({ 
+      committee: c.name, 
+      points: c.points,
+      memberCount: c.members,
+      members: Array(c.members).fill('') 
+    }))
+  );
+  const [isLoading, setIsLoading] = useState(true);
 
-  // Save to localStorage and Firebase (if available)
+  // 🔥 تحميل البيانات من Firebase عند بدء التطبيق
   useEffect(() => {
-    try {
-      localStorage.setItem('committeeAssignments', JSON.stringify(assignments));
-      
-      // Try Firebase only if it's available
-      if (typeof window !== 'undefined' && window.firebase && window.firebase.database) {
-        try {
-          const db = window.firebase.database();
-          db.ref('assignments').set(assignments).catch(err => {
-            console.log('Firebase save error (non-critical):', err.message);
+    if (typeof window !== 'undefined' && window.firebase && window.firebase.database) {
+      try {
+        const db = window.firebase.database();
+        const assignmentsRef = db.ref('assignments');
+        
+        // قراءة البيانات مرة واحدة عند التحميل
+        assignmentsRef.once('value')
+          .then((snapshot) => {
+            const data = snapshot.val();
+            if (data && Array.isArray(data)) {
+              console.log('✅ تم تحميل البيانات من Firebase');
+              setAssignments(data);
+            } else {
+              console.log('ℹ️ لا توجد بيانات في Firebase، استخدام البيانات الافتراضية');
+            }
+            setIsLoading(false);
+          })
+          .catch((error) => {
+            console.error('خطأ في تحميل البيانات:', error);
+            setIsLoading(false);
           });
-        } catch (fbError) {
-          console.log('Firebase not fully initialized (non-critical):', fbError.message);
-        }
+      } catch (error) {
+        console.error('Firebase غير متاح:', error);
+        setIsLoading(false);
       }
-    } catch (error) {
-      console.error('Error saving data:', error);
+    } else {
+      setIsLoading(false);
     }
-  }, [assignments]);
+  }, []);
 
-  // Listen for Firebase changes (if available)
+  // 🔥 حفظ التغييرات إلى Firebase فقط (إزالة localStorage)
+  useEffect(() => {
+    if (!isLoading && typeof window !== 'undefined' && window.firebase && window.firebase.database) {
+      try {
+        const db = window.firebase.database();
+        db.ref('assignments').set(assignments)
+          .then(() => console.log('✅ تم الحفظ في Firebase'))
+          .catch(err => console.error('خطأ في الحفظ:', err));
+      } catch (error) {
+        console.error('خطأ:', error);
+      }
+    }
+  }, [assignments, isLoading]);
+
+  // 🔥 الاستماع للتغييرات من الأجهزة الأخرى
   useEffect(() => {
     if (typeof window !== 'undefined' && window.firebase && window.firebase.database) {
       try {
@@ -559,25 +574,19 @@ function CommitteeManager() {
         const listener = assignmentsRef.on('value', (snapshot) => {
           const data = snapshot.val();
           if (data && Array.isArray(data)) {
+            console.log('🔄 تحديث من جهاز آخر');
             setAssignments(data);
           }
-        }, (error) => {
-          console.log('Firebase listener error (non-critical):', error.message);
         });
 
-        return () => {
-          try {
-            assignmentsRef.off('value', listener);
-          } catch (error) {
-            console.log('Error removing Firebase listener:', error.message);
-          }
-        };
-      } catch (fbError) {
-        console.log('Firebase not available (non-critical):', fbError.message);
+        return () => assignmentsRef.off('value', listener);
+      } catch (error) {
+        console.log('خطأ في المراقبة:', error);
       }
     }
   }, []);
 
+  
   const getMemberPoints = (memberName) => {
     return assignments.reduce((total, assignment) => {
       if (assignment.members.includes(memberName)) return total + assignment.points;
