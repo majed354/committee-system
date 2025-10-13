@@ -723,3 +723,8 @@ body {
   width: 100%;                   /* خلي select يملا عموده فقط */
   max-width: 100%;
 }
+@media (min-width: 760px) {
+  .selection-grid {
+    grid-template-columns: repeat(2, minmax(280px, 1fr));
+  }
+}
