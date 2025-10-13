@@ -716,14 +716,17 @@ function CommitteeManager() {
                   className: 'member-select'
                 },
                   React.createElement('option', { value: '' }, '-- اختر عضو --'),
-                  MEMBERS.map(memberName => {
-                    const points = getMemberPoints(memberName);
-                    const level = getMemberLevel(points);
-                    return React.createElement('option', {
-                      key: memberName,
-                      value: memberName
-                    }, `${memberName} (${points} نقطة) ${level ? `- ${level.name} ✓` : ''}`);
-                  })
+                 MEMBERS.map(memberName => {
+  const points = getMemberPoints(memberName);
+  const level = getMemberLevel(points);
+  const tooltip = `${memberName} (${points} نقطة)${level ? ` - ${level.name}` : ''}`;
+  return React.createElement('option', {
+    key: memberName,
+    value: memberName,
+    title: tooltip       // معلومة كاملة كـ tooltip عند الوقوف بالفأرة
+  }, memberName);        // نعرض الاسم فقط داخل القائمة
+})
+
                 ),
                 member && (() => {
                   const points = getMemberPoints(member);
