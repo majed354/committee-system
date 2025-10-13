@@ -509,7 +509,8 @@ function CommitteeManager() {
   const [activeTab, setActiveTab] = useState('selection');
   const [expandedCommittees, setExpandedCommittees] = useState({});
  
- const [assignments, setAssignments] = useState(
+  // ↓↓↓ ابدأ الاستبدال من هنا ↓↓↓
+  const [assignments, setAssignments] = useState(
     COMMITTEES.map(c => ({ 
       committee: c.name, 
       points: c.points,
@@ -518,95 +519,55 @@ function CommitteeManager() {
     }))
   );
   const [isLoading, setIsLoading] = useState(true);
-  const [isSaving, setIsSaving] = useState(false); // ✅ إضافة هذا السطر
 
-  // 🔥 تحميل البيانات من Firebase عند بدء التطبيق
+  // 🔥 تحميل + الاستماع للتغييرات من Firebase (كتلة موحّدة)
   useEffect(() => {
-    console.log('🔄 جاري تحميل البيانات من Firebase...'); // ✅ رسالة واضحة
-    
-    if (typeof window !== 'undefined' && window.firebase && window.firebase.database) {
-      try {
-        const db = window.firebase.database();
-        const assignmentsRef = db.ref('assignments');
-        
-        assignmentsRef.once('value')
-          .then((snapshot) => {
-            const data = snapshot.val();
-            if (data && Array.isArray(data) && data.length > 0) { // ✅ تحقق من length
-              console.log('✅ تم تحميل البيانات من Firebase بنجاح');
-              console.log('📊 عدد اللجان المحملة:', data.length); // ✅ معلومات إضافية
-              setAssignments(data);
-            } else {
-              console.log('ℹ️ لا توجد بيانات محفوظة - استخدام البيانات الافتراضية');
-            }
-            setIsLoading(false);
-          })
-          .catch((error) => {
-            console.error('❌ خطأ في تحميل البيانات:', error);
-            setIsLoading(false);
-          });
-      } catch (error) {
-        console.error('❌ Firebase غير متاح:', error);
-        setIsLoading(false);
-      }
-    } else {
+    if (!(typeof window !== 'undefined' && window.firebase?.database)) {
       console.warn('⚠️ Firebase غير مفعل');
       setIsLoading(false);
+      return;
     }
+
+    const db = window.firebase.database();
+    const assignmentsRef = db.ref('assignments');
+
+    // تحويل أي Array-like Object إلى Array بطول ثابت
+    const toFixedLengthArray = (val, len) => {
+      if (Array.isArray(val)) return val.slice(0, len);
+      if (val && typeof val === 'object') {
+        const arr = Array(len).fill('');
+        Object.keys(val).forEach(k => {
+          const i = Number(k);
+          if (!Number.isNaN(i) && i < len) arr[i] = val[k] || '';
+        });
+        return arr;
+      }
+      return Array(len).fill('');
+    };
+
+    const onValue = (snapshot) => {
+      const raw = snapshot.val(); // قد يكون Object بمفاتيح رقمية
+      if (raw) {
+        const normalized = COMMITTEES.map((c, i) => ({
+          committee: c.name,
+          points: c.points,
+          memberCount: c.members,
+          members: toFixedLengthArray(raw[i]?.members, c.members)
+        }));
+        setAssignments(normalized);
+      }
+      setIsLoading(false);
+    };
+
+    assignmentsRef.on('value', onValue, (error) => {
+      console.error('❌ خطأ في التحميل:', error);
+      setIsLoading(false);
+    });
+
+    return () => assignmentsRef.off('value', onValue);
   }, []);
 
-  // 🔥 حفظ التغييرات إلى Firebase
-  useEffect(() => {
-    if (!isLoading && !isSaving && typeof window !== 'undefined' && window.firebase && window.firebase.database) { // ✅ إضافة !isSaving
-      setIsSaving(true); // ✅ بدء الحفظ
-      try {
-        const db = window.firebase.database();
-        db.ref('assignments').set(assignments)
-          .then(() => {
-            console.log('✅ تم الحفظ في Firebase بنجاح');
-            setIsSaving(false); // ✅ إنهاء الحفظ
-          })
-          .catch(err => {
-            console.error('❌ خطأ في الحفظ:', err);
-            setIsSaving(false); // ✅ إنهاء الحفظ
-          });
-      } catch (error) {
-        console.error('❌ خطأ:', error);
-        setIsSaving(false); // ✅ إنهاء الحفظ
-      }
-    }
-  }, [assignments, isLoading]); // ✅ التبعيات صحيحة
-
-  // 🔥 الاستماع للتغييرات من الأجهزة الأخرى
-  useEffect(() => {
-    if (typeof window !== 'undefined' && window.firebase && window.firebase.database) {
-      try {
-        const db = window.firebase.database();
-        const assignmentsRef = db.ref('assignments');
-        
-        const listener = assignmentsRef.on('value', (snapshot) => {
-          if (!isLoading) { // ✅ إضافة هذا الشرط المهم
-            const data = snapshot.val();
-            if (data && Array.isArray(data)) {
-              console.log('🔄 تحديث من جهاز آخر');
-              setAssignments(data);
-            }
-          }
-        });
-
-        return () => {
-          try {
-            assignmentsRef.off('value', listener);
-          } catch (error) {
-            console.log('خطأ في إزالة المستمع:', error);
-          }
-        };
-      } catch (error) {
-        console.log('❌ خطأ في إعداد المراقبة:', error);
-      }
-    }
-  }, [isLoading]); // ✅ إضافة isLoading كتبعية
-  
+  // === دوال المساعدة كما هي ===
   const getMemberPoints = (memberName) => {
     return assignments.reduce((total, assignment) => {
       if (assignment.members.includes(memberName)) return total + assignment.points;
@@ -636,10 +597,27 @@ function CommitteeManager() {
     return null;
   };
 
+  // 🔒 حفظ جزئي وقت الاختيار فقط (بدون حفظ شامل تلقائي)
   const handleMemberSelect = (committeeIndex, slot, memberName) => {
-    const newAssignments = [...assignments];
-    newAssignments[committeeIndex].members[slot] = memberName;
-    setAssignments(newAssignments);
+    // تحديث الواجهة فورًا
+    setAssignments(prev => {
+      const next = prev.map(a => ({ ...a, members: [...a.members] }));
+      next[committeeIndex].members[slot] = memberName;
+      return next;
+    });
+
+    // كتابة جزئية في RTDB لضمان التزامن الفوري بين الأجهزة
+    try {
+      if (typeof window !== 'undefined' && window.firebase?.database) {
+        const db = window.firebase.database();
+        db.ref(`assignments/${committeeIndex}/members/${slot}`)
+          .set(memberName || '')
+          .then(() => console.log('✅ حفظ فوري لعضو اللجنة'))
+          .catch(err => console.error('❌ خطأ في حفظ العضو:', err));
+      }
+    } catch (e) {
+      console.error('❌ فشل الحفظ الجزئي:', e);
+    }
   };
 
   const getMemberStats = () => {
