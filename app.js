@@ -532,18 +532,25 @@ function CommitteeManager() {
     const assignmentsRef = db.ref('assignments');
 
     // تحويل أي Array-like Object إلى Array بطول ثابت
-    const toFixedLengthArray = (val, len) => {
-      if (Array.isArray(val)) return val.slice(0, len);
-      if (val && typeof val === 'object') {
-        const arr = Array(len).fill('');
-        Object.keys(val).forEach(k => {
-          const i = Number(k);
-          if (!Number.isNaN(i) && i < len) arr[i] = val[k] || '';
-        });
-        return arr;
-      }
-      return Array(len).fill('');
-    };
+// يحوّل أي قيمة (Array أو Object) إلى مصفوفة مكتملة الطول دون ثقوب
+const toFixedLengthArray = (val, len) => {
+  const arr = Array(len).fill('');
+  if (Array.isArray(val)) {
+    for (let i = 0; i < len; i++) {
+      arr[i] = (val[i] === undefined || val[i] === null) ? '' : val[i];
+    }
+    return arr;
+  }
+  if (val && typeof val === 'object') {
+    Object.keys(val).forEach(k => {
+      const i = Number(k);
+      if (!Number.isNaN(i) && i < len) arr[i] = val[k] || '';
+    });
+    return arr;
+  }
+  return arr;
+};
+
 
     const onValue = (snapshot) => {
       const raw = snapshot.val(); // قد يكون Object بمفاتيح رقمية
@@ -706,37 +713,39 @@ function CommitteeManager() {
             )
           ),
 
-          React.createElement('div', { className: 'selection-grid' },
-            assignment.members.map((member, slot) =>
-              React.createElement('div', { key: slot, className: 'member-select-wrapper' },
-                React.createElement('label', null, `العضو ${slot + 1}`),
-                React.createElement('select', {
-                  value: member,
-                  onChange: (e) => handleMemberSelect(committeeIndex, slot, e.target.value),
-                  className: 'member-select'
-                },
-                  React.createElement('option', { value: '' }, '-- اختر عضو --'),
-                 MEMBERS.map(memberName => {
-  const points = getMemberPoints(memberName);
-  const level = getMemberLevel(points);
-  const tooltip = `${memberName} (${points} نقطة)${level ? ` - ${level.name}` : ''}`;
-  return React.createElement('option', {
-    key: memberName,
-    value: memberName,
-    title: tooltip       // معلومة كاملة كـ tooltip عند الوقوف بالفأرة
-  }, memberName);        // نعرض الاسم فقط داخل القائمة
-})
+        React.createElement('div', { className: 'selection-grid' },
+  Array.from({ length: assignment.memberCount }, (_, slot) => {
+    const member = assignment.members?.[slot] ?? '';
+    return React.createElement('div', { key: slot, className: 'member-select-wrapper' },
+      React.createElement('label', null, `العضو ${slot + 1}`),
+      React.createElement('select', {
+        value: member,
+        onChange: (e) => handleMemberSelect(committeeIndex, slot, e.target.value),
+        className: 'member-select'
+      },
+        React.createElement('option', { value: '' }, '-- اختر عضو --'),
+        MEMBERS.map(memberName => {
+          const points = getMemberPoints(memberName);
+          const level = getMemberLevel(points);
+          return React.createElement('option', { key: memberName, value: memberName },
+            `${memberName} (${points} نقطة) ${level ? `- ${level.name} ✓` : ''}`
+          );
+        })
+      ),
+      member && (() => {
+        const points = getMemberPoints(member);
+        const level = getMemberLevel(points);
+        return React.createElement('div', {
+          className: `selected-info ${level ? 'level-badge' : 'incomplete'}`,
+          style: level ? { background: level.bgColor, color: 'white' } : {}
+        }, `إجمالي: ${points} نقطة ${level ? `- ${level.name} ✓` : ''}`);
+      })()
+    );
+  })
+)
 
-                ),
-                member && (() => {
-                  const points = getMemberPoints(member);
-                  const level = getMemberLevel(points);
-                  return React.createElement('div', {
-                    className: `selected-info ${level ? 'level-badge' : 'incomplete'}`,
-                    style: level ? { background: level.bgColor, color: 'white' } : {}
-                  }, `إجمالي: ${points} نقطة ${level ? `- ${level.name} ✓` : ''}`);
-                })()
-              )
+
+              
             )
           )
         )
