@@ -710,3 +710,16 @@ body {
 .bg-info-light {
     background-color: #e3f2fd;
 }
+/* === Hotfix: ثبات الشبكة ومنع تمدد خانة العضو الأول === */
+.selection-grid {
+  align-items: start;            /* يمنع شد العناصر طولياً */
+}
+
+.member-select-wrapper {
+  min-width: 0;                  /* مهم جدًا داخل الـ grid عشان ما يتمدّد العمود */
+}
+
+.member-select {
+  width: 100%;                   /* خلي select يملا عموده فقط */
+  max-width: 100%;
+}
