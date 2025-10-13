@@ -508,7 +508,8 @@ const MEMBERS = [
 function CommitteeManager() {
   const [activeTab, setActiveTab] = useState('selection');
   const [expandedCommittees, setExpandedCommittees] = useState({});
-  const [assignments, setAssignments] = useState(
+ 
+ const [assignments, setAssignments] = useState(
     COMMITTEES.map(c => ({ 
       committee: c.name, 
       points: c.points,
@@ -517,52 +518,64 @@ function CommitteeManager() {
     }))
   );
   const [isLoading, setIsLoading] = useState(true);
+  const [isSaving, setIsSaving] = useState(false); // ✅ إضافة هذا السطر
 
   // 🔥 تحميل البيانات من Firebase عند بدء التطبيق
   useEffect(() => {
+    console.log('🔄 جاري تحميل البيانات من Firebase...'); // ✅ رسالة واضحة
+    
     if (typeof window !== 'undefined' && window.firebase && window.firebase.database) {
       try {
         const db = window.firebase.database();
         const assignmentsRef = db.ref('assignments');
         
-        // قراءة البيانات مرة واحدة عند التحميل
         assignmentsRef.once('value')
           .then((snapshot) => {
             const data = snapshot.val();
-            if (data && Array.isArray(data)) {
-              console.log('✅ تم تحميل البيانات من Firebase');
+            if (data && Array.isArray(data) && data.length > 0) { // ✅ تحقق من length
+              console.log('✅ تم تحميل البيانات من Firebase بنجاح');
+              console.log('📊 عدد اللجان المحملة:', data.length); // ✅ معلومات إضافية
               setAssignments(data);
             } else {
-              console.log('ℹ️ لا توجد بيانات في Firebase، استخدام البيانات الافتراضية');
+              console.log('ℹ️ لا توجد بيانات محفوظة - استخدام البيانات الافتراضية');
             }
             setIsLoading(false);
           })
           .catch((error) => {
-            console.error('خطأ في تحميل البيانات:', error);
+            console.error('❌ خطأ في تحميل البيانات:', error);
             setIsLoading(false);
           });
       } catch (error) {
-        console.error('Firebase غير متاح:', error);
+        console.error('❌ Firebase غير متاح:', error);
         setIsLoading(false);
       }
     } else {
+      console.warn('⚠️ Firebase غير مفعل');
       setIsLoading(false);
     }
   }, []);
 
-  // 🔥 حفظ التغييرات إلى Firebase فقط (إزالة localStorage)
+  // 🔥 حفظ التغييرات إلى Firebase
   useEffect(() => {
-    if (!isLoading && typeof window !== 'undefined' && window.firebase && window.firebase.database) {
+    if (!isLoading && !isSaving && typeof window !== 'undefined' && window.firebase && window.firebase.database) { // ✅ إضافة !isSaving
+      setIsSaving(true); // ✅ بدء الحفظ
       try {
         const db = window.firebase.database();
         db.ref('assignments').set(assignments)
-          .then(() => console.log('✅ تم الحفظ في Firebase'))
-          .catch(err => console.error('خطأ في الحفظ:', err));
+          .then(() => {
+            console.log('✅ تم الحفظ في Firebase بنجاح');
+            setIsSaving(false); // ✅ إنهاء الحفظ
+          })
+          .catch(err => {
+            console.error('❌ خطأ في الحفظ:', err);
+            setIsSaving(false); // ✅ إنهاء الحفظ
+          });
       } catch (error) {
-        console.error('خطأ:', error);
+        console.error('❌ خطأ:', error);
+        setIsSaving(false); // ✅ إنهاء الحفظ
       }
     }
-  }, [assignments, isLoading]);
+  }, [assignments, isLoading]); // ✅ التبعيات صحيحة
 
   // 🔥 الاستماع للتغييرات من الأجهزة الأخرى
   useEffect(() => {
@@ -572,20 +585,27 @@ function CommitteeManager() {
         const assignmentsRef = db.ref('assignments');
         
         const listener = assignmentsRef.on('value', (snapshot) => {
-          const data = snapshot.val();
-          if (data && Array.isArray(data)) {
-            console.log('🔄 تحديث من جهاز آخر');
-            setAssignments(data);
+          if (!isLoading) { // ✅ إضافة هذا الشرط المهم
+            const data = snapshot.val();
+            if (data && Array.isArray(data)) {
+              console.log('🔄 تحديث من جهاز آخر');
+              setAssignments(data);
+            }
           }
         });
 
-        return () => assignmentsRef.off('value', listener);
+        return () => {
+          try {
+            assignmentsRef.off('value', listener);
+          } catch (error) {
+            console.log('خطأ في إزالة المستمع:', error);
+          }
+        };
       } catch (error) {
-        console.log('خطأ في المراقبة:', error);
+        console.log('❌ خطأ في إعداد المراقبة:', error);
       }
     }
-  }, []);
-
+  }, [isLoading]); // ✅ إضافة isLoading كتبعية
   
   const getMemberPoints = (memberName) => {
     return assignments.reduce((total, assignment) => {
@@ -631,11 +651,34 @@ function CommitteeManager() {
   };
 
   const handlePrint = () => window.print();
+
+
   
   const toggleCommittee = (index) => {
     setExpandedCommittees(prev => ({ ...prev, [index]: !prev[index] }));
   };
 
+  if (isLoading) {
+    return React.createElement('div', { 
+      className: 'container',
+      style: { 
+        display: 'flex', 
+        justifyContent: 'center', 
+        alignItems: 'center', 
+        minHeight: '100vh',
+        flexDirection: 'column',
+        gap: '20px'
+      } 
+    },
+      React.createElement('div', {
+        style: { fontSize: '3em' }
+      }, '⏳'),
+      React.createElement('h2', {
+        style: { color: 'white', textAlign: 'center' }
+      }, 'جاري تحميل البيانات...')
+    );
+  }
+  
   return React.createElement('div', { className: 'container' }, 
     // Header
     React.createElement('div', { className: 'header' },
