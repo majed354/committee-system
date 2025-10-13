@@ -686,7 +686,7 @@ function CommitteeManager() {
         React.createElement('ul', null,
           React.createElement('li', null, 'يمكن للعضو الواحد اختيار عدة لجان'),
           React.createElement('li', null, React.createElement('strong', null, '8 نقاط أو أكثر = مستوفى'), ' (الحد الأدنى المطلوب)'),
-          React.createElement('li', null, React.createElement('strong', null, '10 نقاط أو أكثر = متقدم'), ' (مستوى جيد)'),
+          React.createElement('li', null, React.createElement('strong', null, '10 نقاط أو أكثر = متقدم'), ' (مستوى جيد جدا)'),
           React.createElement('li', null, React.createElement('strong', null, '16 نقطة أو أكثر = متميز'), ' (مستوى ممتاز)')
         )
       ),
