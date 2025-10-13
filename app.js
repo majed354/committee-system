@@ -1,9 +1,15 @@
+// --- القسم الأول: استيراد مكتبات React ---
+// استيراد हुक्स `useState` و `useEffect` من مكتبة React لإدارة الحالة والتأثيرات الجانبية.
 const { useState, useEffect } = React;
 
+
+// --- القسم الثاني: البيانات الثابتة (Constants) ---
+// 2.1: تعريف بيانات اللجان
+// مصفوفة تحتوي على جميع تفاصيل اللجان، بما في ذلك الاسم، النقاط، عدد الأعضاء، والمهام.
 const COMMITTEES = [
-  { 
-    name: 'لجنة تطوير المناهج - بكالوريوس القراءات', 
-    points: 4, 
+  {
+    name: 'لجنة تطوير المناهج - بكالوريوس القراءات',
+    points: 4,
     members: 2,
     mainTask: 'تطوير ومتابعة البرنامج الأكاديمي لبكالوريوس القراءات ومواءمته مع معايير الجودة ومتطلبات سوق العمل',
     tasks: [
@@ -28,9 +34,9 @@ const COMMITTEES = [
       'إعداد تقرير ختامي لكل ما تم إنجازه في نهاية كل فصل دراسي'
     ]
   },
-  { 
-    name: 'لجنة تطوير المناهج - بكالوريوس القرآن وعلومه', 
-    points: 4, 
+  {
+    name: 'لجنة تطوير المناهج - بكالوريوس القرآن وعلومه',
+    points: 4,
     members: 2,
     mainTask: 'تطوير ومتابعة البرنامج الأكاديمي لبكالوريوس القرآن وعلومه ومواءمته مع معايير الجودة ومتطلبات سوق العمل',
     tasks: [
@@ -55,9 +61,9 @@ const COMMITTEES = [
       'إعداد تقرير ختامي لكل ما تم إنجازه في نهاية كل فصل دراسي'
     ]
   },
-  { 
-    name: 'لجنة تطوير المناهج - ماجستير القراءات', 
-    points: 4, 
+  {
+    name: 'لجنة تطوير المناهج - ماجستير القراءات',
+    points: 4,
     members: 2,
     mainTask: 'تطوير ومتابعة البرنامج الأكاديمي لماجستير القراءات ومواءمته مع معايير الجودة ومتطلبات سوق العمل والبحث العلمي',
     tasks: [
@@ -85,9 +91,9 @@ const COMMITTEES = [
       'متابعة جودة الرسائل العلمية المنجزة في البرنامج'
     ]
   },
-  { 
-    name: 'لجنة تطوير المناهج - ماجستير الدراسات القرآنية المعاصرة', 
-    points: 4, 
+  {
+    name: 'لجنة تطوير المناهج - ماجستير الدراسات القرآنية المعاصرة',
+    points: 4,
     members: 2,
     mainTask: 'تطوير ومتابعة البرنامج الأكاديمي لماجستير الدراسات القرآنية المعاصرة ومواءمته مع معايير الجودة ومتطلبات سوق العمل والبحث',
     tasks: [
@@ -115,9 +121,9 @@ const COMMITTEES = [
       'متابعة جودة الرسائل العلمية المنجزة في البرنامج'
     ]
   },
-  { 
-    name: 'لجنة تطوير المناهج - دكتوراه القراءات', 
-    points: 4, 
+  {
+    name: 'لجنة تطوير المناهج - دكتوراه القراءات',
+    points: 4,
     members: 2,
     mainTask: 'تطوير ومتابعة البرنامج الأكاديمي لدكتوراه القراءات ومواءمته مع معايير الجودة ومتطلبات البحث العلمي المتقدم',
     tasks: [
@@ -146,9 +152,9 @@ const COMMITTEES = [
       'تطوير آليات القبول ومعايير الاختبار الشامل'
     ]
   },
-  { 
-    name: 'لجنة تطوير المناهج - دكتوراه الدراسات القرآنية', 
-    points: 4, 
+  {
+    name: 'لجنة تطوير المناهج - دكتوراه الدراسات القرآنية',
+    points: 4,
     members: 2,
     mainTask: 'تطوير ومتابعة البرنامج الأكاديمي لدكتوراه الدراسات القرآنية ومواءمته مع معايير الجودة ومتطلبات البحث العلمي المتقدم',
     tasks: [
@@ -177,9 +183,9 @@ const COMMITTEES = [
       'تطوير آليات القبول ومعايير الاختبار الشامل'
     ]
   },
-  { 
-    name: 'لجنة الجودة والاعتماد - بكالوريوس القرآن وعلومه', 
-    points: 10, 
+  {
+    name: 'لجنة الجودة والاعتماد - بكالوريوس القرآن وعلومه',
+    points: 10,
     members: 2,
     mainTask: 'ضمان جودة البرنامج ومتابعة تطبيق معايير الاعتماد الأكاديمي والتحسين المستمر (برنامج قبل الاعتماد الأولي)',
     tasks: [
@@ -201,9 +207,9 @@ const COMMITTEES = [
       'التحضير لزيارات المراجعة الخارجية والاعتماد الأكاديمي'
     ]
   },
-  { 
-    name: 'لجنة الجودة والاعتماد - ماجستير القراءات', 
-    points: 10, 
+  {
+    name: 'لجنة الجودة والاعتماد - ماجستير القراءات',
+    points: 10,
     members: 3,
     mainTask: 'ضمان جودة البرنامج ومتابعة تطبيق معايير الاعتماد الأكاديمي والتحسين المستمر (برنامج قبل الاعتماد الأولي)',
     tasks: [
@@ -225,9 +231,9 @@ const COMMITTEES = [
       'التحضير لزيارات المراجعة الخارجية والاعتماد الأكاديمي'
     ]
   },
-  { 
-    name: 'لجنة الجودة والاعتماد - ماجستير الدراسات القرآنية المعاصرة', 
-    points: 10, 
+  {
+    name: 'لجنة الجودة والاعتماد - ماجستير الدراسات القرآنية المعاصرة',
+    points: 10,
     members: 3,
     mainTask: 'ضمان جودة البرنامج ومتابعة تطبيق معايير الاعتماد الأكاديمي والتحسين المستمر (برنامج قبل الاعتماد الأولي)',
     tasks: [
@@ -249,9 +255,9 @@ const COMMITTEES = [
       'التحضير لزيارات المراجعة الخارجية والاعتماد الأكاديمي'
     ]
   },
-  { 
-    name: 'لجنة الجودة والاعتماد - دكتوراه القراءات', 
-    points: 10, 
+  {
+    name: 'لجنة الجودة والاعتماد - دكتوراه القراءات',
+    points: 10,
     members: 2,
     mainTask: 'ضمان جودة البرنامج ومتابعة تطبيق معايير الاعتماد الأكاديمي والتحسين المستمر (برنامج قبل الاعتماد الأولي)',
     tasks: [
@@ -273,9 +279,9 @@ const COMMITTEES = [
       'التحضير لزيارات المراجعة الخارجية والاعتماد الأكاديمي'
     ]
   },
-  { 
-    name: 'لجنة الجودة والاعتماد - دكتوراه الدراسات القرآنية', 
-    points: 10, 
+  {
+    name: 'لجنة الجودة والاعتماد - دكتوراه الدراسات القرآنية',
+    points: 10,
     members: 2,
     mainTask: 'ضمان جودة البرنامج ومتابعة تطبيق معايير الاعتماد الأكاديمي والتحسين المستمر (برنامج قبل الاعتماد الأولي)',
     tasks: [
@@ -297,9 +303,9 @@ const COMMITTEES = [
       'التحضير لزيارات المراجعة الخارجية والاعتماد الأكاديمي'
     ]
   },
-  { 
-    name: 'لجنة الجودة والاعتماد - بكالوريوس القراءات', 
-    points: 4, 
+  {
+    name: 'لجنة الجودة والاعتماد - بكالوريوس القراءات',
+    points: 4,
     members: 2,
     mainTask: 'ضمان استمرارية الجودة ومتابعة تطبيق معايير الاعتماد الأكاديمي (برنامج معتمد - متابعة دورية)',
     tasks: [
@@ -315,9 +321,9 @@ const COMMITTEES = [
       'إعداد تقرير فصلي مختصر عن حالة البرنامج'
     ]
   },
-  { 
-    name: 'لجنة الإرشاد الأكاديمي والمعادلات', 
-    points: 4, 
+  {
+    name: 'لجنة الإرشاد الأكاديمي والمعادلات',
+    points: 4,
     members: 2,
     mainTask: 'توفير الإرشاد الأكاديمي الفعال لجميع طلاب القسم (6 برامج) ومعالجة طلبات المعادلات',
     tasks: [
@@ -339,9 +345,9 @@ const COMMITTEES = [
       'إعداد تقرير إنجاز في نهاية كل فصل دراسي'
     ]
   },
-  { 
-    name: 'لجنة الاختبارات والنتائج', 
-    points: 2, 
+  {
+    name: 'لجنة الاختبارات والنتائج',
+    points: 2,
     members: 2,
     mainTask: 'الإشراف على تنظيم وتنفيذ الاختبارات لكافة برامج القسم وتقييم نتائجها',
     tasks: [
@@ -359,9 +365,9 @@ const COMMITTEES = [
       'إعداد تقرير ختامي في نهاية كل فصل دراسي'
     ]
   },
-  { 
-    name: 'لجنة الجداول الدراسية', 
-    points: 2, 
+  {
+    name: 'لجنة الجداول الدراسية',
+    points: 2,
     members: 2,
     mainTask: 'إعداد الجداول الدراسية لكافة برامج القسم (6 برامج) في جميع الفصول الدراسية',
     tasks: [
@@ -377,9 +383,9 @@ const COMMITTEES = [
       'إعداد تقرير عن الجداول في بداية كل فصل'
     ]
   },
-  { 
-    name: 'لجنة الأنشطة الطلابية', 
-    points: 4, 
+  {
+    name: 'لجنة الأنشطة الطلابية',
+    points: 4,
     members: 2,
     mainTask: 'تخطيط وتنفيذ الأنشطة الطلابية المتنوعة لجميع برامج القسم',
     tasks: [
@@ -396,9 +402,9 @@ const COMMITTEES = [
       'إعداد تقرير إنجاز في نهاية كل فصل دراسي'
     ]
   },
-  { 
-    name: 'لجنة الدراسات العليا والبحث العلمي', 
-    points: 6, 
+  {
+    name: 'لجنة الدراسات العليا والبحث العلمي',
+    points: 6,
     members: 2,
     mainTask: 'متابعة شؤون طلاب الدراسات العليا (4 برامج) وتنمية البحث العلمي بالقسم',
     tasks: [
@@ -417,9 +423,9 @@ const COMMITTEES = [
       'إعداد تقرير إنجاز في نهاية كل فصل دراسي'
     ]
   },
-  { 
-    name: 'لجنة الفحص العلمي لخطط الرسائل - مسار القراءات', 
-    points: 2, 
+  {
+    name: 'لجنة الفحص العلمي لخطط الرسائل - مسار القراءات',
+    points: 2,
     members: 2,
     mainTask: 'فحص ومراجعة خطط الرسائل العلمية (ماجستير ودكتوراه) لمسار القراءات',
     tasks: [
@@ -434,9 +440,9 @@ const COMMITTEES = [
       'عرض التقرير للمناقشة في مجلس القسم'
     ]
   },
-  { 
-    name: 'لجنة الفحص العلمي لخطط الرسائل - مسار الدراسات القرآنية', 
-    points: 2, 
+  {
+    name: 'لجنة الفحص العلمي لخطط الرسائل - مسار الدراسات القرآنية',
+    points: 2,
     members: 2,
     mainTask: 'فحص ومراجعة خطط الرسائل العلمية (ماجستير ودكتوراه) لمسار الدراسات القرآنية',
     tasks: [
@@ -451,9 +457,9 @@ const COMMITTEES = [
       'عرض التقرير للمناقشة في مجلس القسم'
     ]
   },
-  { 
-    name: 'لجنة العلاقات العامة والإعلام', 
-    points: 2, 
+  {
+    name: 'لجنة العلاقات العامة والإعلام',
+    points: 2,
     members: 2,
     mainTask: 'إدارة الحضور الإعلامي للقسم وتعزيز التواصل مع الجمهور الداخلي والخارجي',
     tasks: [
@@ -469,9 +475,9 @@ const COMMITTEES = [
       'إحداث منصات جديدة تهتم بالقراءات وبالقرآن'
     ]
   },
-  { 
-    name: 'لجنة المتابعة', 
-    points: 4, 
+  {
+    name: 'لجنة المتابعة',
+    points: 4,
     members: 3,
     mainTask: 'متابعة سير عمل جميع اللجان في القسم (20 لجنة) وضمان تنفيذ خططها',
     tasks: [
@@ -494,6 +500,8 @@ const COMMITTEES = [
   }
 ];
 
+// 2.2: تعريف قائمة الأعضاء
+// مصفوفة تحتوي على أسماء جميع الأعضاء المتاحين للاختيار في اللجان.
 const MEMBERS = [
   'عبدالله حماد القرشي', 'ناصر سعود القثامي', 'حاتم عابد القرشي', 'ماجد عبدالعزيز الحارثي',
   'رجاء محمد هوساوي', 'عبدالله عيدان الزهراني', 'منال منصور القرشي', 'خلود شاكر العبدلي',
@@ -505,11 +513,15 @@ const MEMBERS = [
   'عبدالله سعد الثبيتي', 'عايده مصلح المالكي'
 ];
 
-function CommitteeManager() {
-  const [activeTab, setActiveTab] = useState('selection');
-  const [expandedCommittees, setExpandedCommittees] = useState({});
 
-  // الحالة الافتراضية (تستبدل بعد التحميل من RTDB)
+// --- القسم الثالث: المكون الرئيسي للتطبيق (CommitteeManager) ---
+function CommitteeManager() {
+  // --- 3.1: تعريف الحالات (State Hooks) ---
+  // `activeTab`: لتتبع التبويب النشط حاليًا (التوزيع، الأعضاء، ...).
+  const [activeTab, setActiveTab] = useState('selection');
+  // `expandedCommittees`: لتتبع اللجان التي تم توسيعها لعرض مهامها.
+  const [expandedCommittees, setExpandedCommittees] = useState({});
+  // `assignments`: لتخزين التعيينات الحالية للأعضاء في اللجان (يتم تحميلها من قاعدة البيانات).
   const [assignments, setAssignments] = useState(
     COMMITTEES.map(c => ({
       committee: c.name,
@@ -518,11 +530,13 @@ function CommitteeManager() {
       members: Array(c.members).fill('')
     }))
   );
+  // `isLoading`: لتتبع حالة تحميل البيانات من قاعدة البيانات.
   const [isLoading, setIsLoading] = useState(true);
 
-  // ===== دوال مساعدة أساسية =====
+  // --- 3.2: الدوال المساعدة (Helper Functions) ---
 
-  // تطبيع أي قيمة من RTDB إلى مصفوفة مكتملة الطول (لا ثقوب)
+  // دالة `toFixedLengthArray`: تضمن أن مصفوفة الأعضاء دائمًا بنفس الطول المحدد للجنة،
+  // حتى لو كانت البيانات المستلمة من Firebase غير مكتملة (بها "ثقوب").
   const toFixedLengthArray = (val, len) => {
     const arr = Array(len).fill('');
     if (Array.isArray(val)) {
@@ -541,13 +555,13 @@ function CommitteeManager() {
     return arr;
   };
 
-  // مجموع نقاط عضو (عدد اللجان التي اختير فيها × نقاط كل لجنة)
+  // دالة `getMemberPoints`: تحسب إجمالي النقاط لعضو معين عن طريق جمع نقاط كل لجنة يشارك فيها.
   const getMemberPoints = (memberName) => {
     if (!memberName) return 0;
     return assignments.reduce((total, a) => total + (a.members.includes(memberName) ? a.points : 0), 0);
   };
 
-  // مستويات الإنجاز (كما طلبت)
+  // دالة `getMemberLevel`: تحدد مستوى الإنجاز للعضو بناءً على إجمالي نقاطه.
   const getMemberLevel = (points) => {
     if (points >= 16) return {
       name: 'متميز',
@@ -570,6 +584,8 @@ function CommitteeManager() {
     return null;
   };
 
+  // دالة `getMemberStats`: تنشئ مصفوفة تحتوي على إحصائيات كل عضو (الاسم، النقاط، اللجان)
+  // وتقوم بترتيبها تنازليًا حسب النقاط.
   const getMemberStats = () =>
     MEMBERS.map(name => ({
       name,
@@ -577,7 +593,9 @@ function CommitteeManager() {
       committees: assignments.filter(a => a.members.includes(name)).map(a => a.committee)
     })).sort((a, b) => b.points - a.points);
 
-  // ===== تحميل حي من RTDB =====
+  // --- 3.3: تحميل البيانات من Firebase (useEffect) ---
+  // هذا الـ Hook يعمل مرة واحدة عند تحميل المكون.
+  // يقوم بالاتصال بقاعدة بيانات Firebase Realtime Database (RTDB) للاستماع للتغييرات في بيانات التعيينات.
   useEffect(() => {
     if (!window.firebase || !window.firebase.database) {
       console.error('Firebase not initialized');
@@ -590,7 +608,7 @@ function CommitteeManager() {
     const onValue = (snap) => {
       const raw = snap.val();
       if (!raw) {
-        // تهيئة أولية بنفس طول COMMITTEES
+        // إذا لم تكن هناك بيانات، يتم استخدام الحالة الافتراضية.
         setAssignments(COMMITTEES.map(c => ({
           committee: c.name,
           points: c.points,
@@ -598,7 +616,7 @@ function CommitteeManager() {
           members: Array(c.members).fill('')
         })));
       } else {
-        // تطبيع يمنع اختفاء الخانة الثانية بسبب الثقوب
+        // إذا كانت هناك بيانات، يتم "تطبيعها" لضمان عدم وجود خانات فارغة.
         const normalized = COMMITTEES.map((c, i) => ({
           committee: c.name,
           points: c.points,
@@ -607,16 +625,20 @@ function CommitteeManager() {
         }));
         setAssignments(normalized);
       }
-      setIsLoading(false);
+      setIsLoading(false); // إيقاف مؤشر التحميل
     };
 
     ref.on('value', onValue, (err) => { console.error('RTDB error:', err); setIsLoading(false); });
+    // دالة التنظيف: إلغاء الاشتراك في الاستماع عند تفكيك المكون.
     return () => ref.off('value', onValue);
   }, []);
 
-  // ===== حفظ الاختيار (يكتب المصفوفة كاملة لمنع الثقوب) =====
+  // --- 3.4: دوال معالجة الأحداث (Event Handlers) ---
+
+  // دالة `handleMemberSelect`: يتم استدعاؤها عند تغيير اختيار عضو في إحدى اللجان.
+  // تقوم بتحديث الحالة محليًا فورًا، ثم تقوم بمزامنة التغيير مع قاعدة بيانات Firebase.
   const handleMemberSelect = async (committeeIndex, slot, memberName) => {
-    // تحديث فوري للواجهة
+    // تحديث فوري للواجهة لتحسين تجربة المستخدم.
     setAssignments(prev => {
       const next = prev.map((a, i) => {
         if (i !== committeeIndex) return a;
@@ -627,7 +649,7 @@ function CommitteeManager() {
       return next;
     });
 
-    // مزامنة مع RTDB
+    // مزامنة مع RTDB.
     try {
       const db = window.firebase.database();
       const current = assignments[committeeIndex]?.members || [];
@@ -641,21 +663,26 @@ function CommitteeManager() {
     }
   };
 
-  // طباعة تقرير التشكيل
+  // دالة `handlePrint`: لطباعة تقرير التشكيل.
   const handlePrint = () => window.print();
 
-  // تبديل توسيع بطاقة لجنة (إن كنت تستخدم عرض المهام)
+  // دالة `toggleCommittee`: لفتح أو إغلاق عرض تفاصيل مهام اللجنة.
   const toggleCommittee = (index) =>
     setExpandedCommittees(prev => ({ ...prev, [index]: !prev[index] }));
 
-  // ======== الواجهة ========
+  // --- 3.5: منطق العرض (Rendering Logic) ---
+
+  // --- 3.5.1: عرض شاشة التحميل ---
+  // يعرض رسالة "جاري التحميل" أثناء جلب البيانات من Firebase.
   if (isLoading) {
     return React.createElement('div', { className: 'loading' }, 'جاري تحميل البيانات...');
   }
 
+  // --- 3.5.2: الهيكل الرئيسي للتطبيق ---
+  // بعد اكتمال التحميل، يتم عرض الواجهة الرئيسية.
   return React.createElement('div', { className: 'container' },
 
-    // رأس الصفحة + التبويبات (محتفظ بها كلها)
+    // --- 3.5.2.1: رأس الصفحة والتبويبات ---
     React.createElement('div', { className: 'header' },
       React.createElement('h1', null, '🎓 نظام إدارة اللجان'),
       React.createElement('div', { className: 'tabs-container' },
@@ -678,9 +705,10 @@ function CommitteeManager() {
       )
     ),
 
-    // ===== تبويب التوزيع (selection) =====
+    // --- 3.5.3: محتوى تبويب "التوزيع" ---
+    // يتم عرض هذا الجزء فقط إذا كان `activeTab` هو `selection`.
     activeTab === 'selection' && React.createElement('div', { className: 'fade-in' },
-      // تعليمات + العتبات
+      // صندوق التعليمات
       React.createElement('div', { className: 'alert' },
         React.createElement('h4', null, '⚠️ تعليمات الاختيار:'),
         React.createElement('ul', null,
@@ -691,9 +719,10 @@ function CommitteeManager() {
         )
       ),
 
+      // عرض بطاقات اللجان للاختيار
       assignments.map((assignment, committeeIndex) =>
         React.createElement('div', { key: committeeIndex, className: 'committee-card' },
-
+          // رأس بطاقة اللجنة
           React.createElement('div', { className: 'committee-header' },
             React.createElement('div', { className: 'committee-name' }, COMMITTEES[committeeIndex].name),
             React.createElement('div', { className: 'committee-meta' },
@@ -702,7 +731,7 @@ function CommitteeManager() {
             )
           ),
 
-          // شبكة خانات الأعضاء — ثابتة بعدد memberCount
+          // شبكة اختيار الأعضاء
           React.createElement('div', { className: 'selection-grid' },
             Array.from({ length: assignment.memberCount }, (_, slot) => {
               const member = assignment.members?.[slot] ?? '';
@@ -725,6 +754,7 @@ function CommitteeManager() {
                   })
                 ),
 
+                // عرض إجمالي نقاط العضو المختار ومستواه
                 member && React.createElement('div', {
                   className: `selected-info ${level ? 'level-badge' : 'incomplete'}`,
                   style: level ? { background: level.bgColor, color: '#fff' } : {}
@@ -733,7 +763,7 @@ function CommitteeManager() {
             })
           ),
 
-          // (اختياري) زر عرض المهام الخاصة باللجنة إن كانت موجودة في COMMITTEES
+          // زر عرض/إخفاء المهام
           (COMMITTEES[committeeIndex].tasks?.length || COMMITTEES[committeeIndex].mainTask) &&
           React.createElement('div', { className: 'tasks-toggle' },
             React.createElement('button', {
@@ -742,24 +772,27 @@ function CommitteeManager() {
             }, expandedCommittees[committeeIndex] ? 'إخفاء المهام' : 'عرض المهام')
           ),
 
+          // قائمة المهام (تظهر عند الضغط على الزر)
           expandedCommittees[committeeIndex] && React.createElement('div', { className: 'tasks-list' },
             COMMITTEES[committeeIndex].mainTask &&
-              React.createElement('p', { className: 'main-task' }, `المهمة الرئيسة: ${COMMITTEES[committeeIndex].mainTask}`),
+            React.createElement('p', { className: 'main-task' }, `المهمة الرئيسة: ${COMMITTEES[committeeIndex].mainTask}`),
             (COMMITTEES[committeeIndex].tasks || []).length > 0 &&
-              React.createElement('ul', null,
-                COMMITTEES[committeeIndex].tasks.map((t, i) => React.createElement('li', { key: i }, t))
-              )
+            React.createElement('ul', null,
+              COMMITTEES[committeeIndex].tasks.map((t, i) => React.createElement('li', { key: i }, t))
+            )
           )
         )
       )
     ),
 
-    // ===== تبويب الأعضاء (members) =====
+    // --- 3.5.4: محتوى تبويب "الأعضاء" ---
+    // يتم عرض هذا الجزء فقط إذا كان `activeTab` هو `members`.
     activeTab === 'members' && React.createElement('div', { className: 'fade-in' },
       React.createElement('div', { className: 'report-container' },
         React.createElement('h2', { className: 'report-title' }, '👥 أعضاء هيئة التدريس'),
 
         React.createElement('div', { className: 'members-grid' },
+          // عرض بطاقة لكل عضو مع إحصائياته
           getMemberStats().map((m, idx) => {
             const lvl = getMemberLevel(m.points);
             return React.createElement('div', {
@@ -789,7 +822,8 @@ function CommitteeManager() {
       )
     ),
 
-    // ===== تبويب تقرير التشكيل (formation) =====
+    // --- 3.5.5: محتوى تبويب "تقرير التشكيل" ---
+    // يتم عرض هذا الجزء فقط إذا كان `activeTab` هو `formation`.
     activeTab === 'formation' && React.createElement('div', { className: 'fade-in' },
       React.createElement('div', { className: 'report-container' },
         React.createElement('div', { className: 'report-header' },
@@ -797,6 +831,7 @@ function CommitteeManager() {
           React.createElement('button', { onClick: handlePrint, className: 'print-button' }, '🖨️ طباعة التقرير')
         ),
 
+        // المحتوى الذي سيتم طباعته
         React.createElement('div', { className: 'report-content' },
           React.createElement('h1', null, 'تقرير تشكيل اللجان'),
           React.createElement('p', null, 'للعام الجامعي 1446هـ'),
@@ -804,7 +839,7 @@ function CommitteeManager() {
             `تاريخ الإصدار: ${new Date().toLocaleDateString('ar-SA')}`
           ),
 
-          // إحصاءات سريعة
+          // شبكة الإحصاءات السريعة
           React.createElement('div', { className: 'stats-grid' },
             React.createElement('div', { className: 'stat-box' },
               React.createElement('div', { className: 'stat-number' }, COMMITTEES.length),
@@ -833,11 +868,13 @@ function CommitteeManager() {
       )
     ),
 
-    // ===== تبويب التفاصيل (details) =====
+    // --- 3.5.6: محتوى تبويب "تفاصيل اللجان" ---
+    // يتم عرض هذا الجزء فقط إذا كان `activeTab` هو `details`.
     activeTab === 'details' && React.createElement('div', { className: 'fade-in' },
       React.createElement('div', { className: 'report-container' },
         React.createElement('h2', { className: 'report-title' }, '📋 تفاصيل اللجان'),
         React.createElement('div', { style: { marginTop: '30px' } },
+          // عرض تفاصيل كل لجنة على حدة
           COMMITTEES.map((committee, idx) => {
             const a = assignments[idx];
             const has = a.members.some(Boolean);
@@ -856,8 +893,8 @@ function CommitteeManager() {
                 React.createElement('h4', null, 'الأعضاء المعينون'),
                 has
                   ? React.createElement('ul', { style: { marginTop: 8 } },
-                      a.members.map((m, i) => React.createElement('li', { key: i }, m || `العضو ${i + 1}: (لم يُحدَّد بعد)`))
-                    )
+                    a.members.map((m, i) => React.createElement('li', { key: i }, m || `العضو ${i + 1}: (لم يُحدَّد بعد)`))
+                  )
                   : React.createElement('div', { className: 'no-committees' }, 'لم يتم التعيين في أي عضو بعد'),
 
                 committee.mainTask && React.createElement('div', { style: { marginTop: '12px', color: '#6b7280' } },
@@ -877,20 +914,24 @@ function CommitteeManager() {
   );
 }
 
-// تشغيل التطبيق بأمان (React 18 أو أقدم)
+// --- القسم الرابع: تشغيل التطبيق وربطه بالـ DOM ---
+// هذا الجزء مسؤول عن عرض مكون React الرئيسي (`CommitteeManager`) في الصفحة.
+// يحتوي على معالجة للأخطاء في حال فشل تحميل التطبيق.
 try {
   const rootEl = document.getElementById('root');
   if (rootEl && ReactDOM?.createRoot) {
+    // الطريقة الحديثة (React 18+)
     ReactDOM.createRoot(rootEl).render(React.createElement(CommitteeManager));
   } else if (rootEl) {
+    // الطريقة القديمة (قبل React 18)
     ReactDOM.render(React.createElement(CommitteeManager), rootEl);
   } else {
     console.error('Root element not found');
   }
 } catch (err) {
   console.error('Error initializing app:', err);
+  // عرض رسالة خطأ للمستخدم في حال فشل كل شيء.
   document.body.innerHTML =
     '<div style="padding:24px; font-family:sans-serif; direction:rtl; text-align:center">' +
     '<h2>حدث خطأ في تحميل التطبيق</h2><p>الرجاء تحديث الصفحة</p></div>';
 }
-
