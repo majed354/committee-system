@@ -856,7 +856,7 @@ const renderCompactCard = (x) => React.createElement('div', {
       )
     ),
 
-    // --- 3.5.5: محتوى تبويب "تقرير التشكيل" ---
+// --- 3.5.5: محتوى تبويب "تقرير التشكيل" ---
 // يتم عرض هذا الجزء فقط إذا كان `activeTab` هو `formation`.
 activeTab === 'formation' && (() => {
   // --- مشتقات حالة اللجان (قراءة فقط؛ لا تؤثر على الحفظ أو التوزيع) ---
@@ -867,8 +867,8 @@ activeTab === 'formation' && (() => {
     complete: (a.members.filter(m => m && m.trim()).length === a.memberCount)
   }));
 
-  const completedCommittees   = committeeStatus.filter(x => x.complete);
-  const incompleteCommittees  = committeeStatus.filter(x => !x.complete);
+  const completedCommittees  = committeeStatus.filter(x => x.complete);
+  const incompleteCommittees = committeeStatus.filter(x => !x.complete);
 
   // مولد بطاقة لجنة موجزة
   const renderCompactCard = (x) => React.createElement(
@@ -909,11 +909,12 @@ activeTab === 'formation' && (() => {
           `تاريخ الإصدار: ${new Date().toLocaleDateString('ar-SA')}`
         ),
 
-        // شبكة الإحصاءات السريعة (كما هي)
+        // شبكة الإحصاءات السريعة (العلوية)
         React.createElement('div', { className: 'stats-grid' },
+          // ✅ تم التعديل هنا: إجمالي الأعضاء
           React.createElement('div', { className: 'stat-box' },
-            React.createElement('div', { className: 'stat-number' }, COMMITTEES.length),
-            React.createElement('div', { className: 'stat-label' }, 'إجمالي اللجان')
+            React.createElement('div', { className: 'stat-number' }, getMemberStats().length),
+            React.createElement('div', { className: 'stat-label' }, 'إجمالي الأعضاء')
           ),
           React.createElement('div', { className: 'stat-box green' },
             React.createElement('div', { className: 'stat-number' },
@@ -935,7 +936,7 @@ activeTab === 'formation' && (() => {
           )
         ),
 
-        // ملخص سريع لحالة اللجان
+        // ملخص سريع لحالة اللجان (السفلي)
         React.createElement('div', { className: 'stats-summary' },
           React.createElement('h3', null, 'ملخص اللجان'),
           React.createElement('div', { className: 'stats-grid' },
