@@ -676,11 +676,44 @@ function CommitteeManager() {
   // --- 3.5.1: عرض شاشة التحميل ---
   // يعرض رسالة "جاري التحميل" أثناء جلب البيانات من Firebase.
   if (isLoading) {
+
+    
     return React.createElement('div', { className: 'loading' }, 'جاري تحميل البيانات...');
   }
 
   // --- 3.5.2: الهيكل الرئيسي للتطبيق ---
   // بعد اكتمال التحميل، يتم عرض الواجهة الرئيسية.
+
+// --- مشتقات حالة اللجان (لا تؤثر على الحفظ) ---
+const committeeStatus = assignments.map((a, idx) => ({
+  index: idx,
+  assignment: a,
+  committee: COMMITTEES[idx],
+  complete: (a.members.filter(m => m && m.trim()).length === a.memberCount)
+}));
+
+const completedCommittees = committeeStatus.filter(x => x.complete);
+const incompleteCommittees = committeeStatus.filter(x => !x.complete);
+
+// مولد بطاقة لجنة موجزة
+const renderCompactCard = (x) => React.createElement('div', {
+  key: x.index,
+  className: `committee-card-compact ${x.complete ? 'complete' : 'incomplete'}`
+},
+  React.createElement('div', { className: 'committee-compact-header' },
+    React.createElement('div', { className: 'committee-compact-name' }, x.committee.name),
+    React.createElement('div', { className: 'committee-compact-points' }, `النقاط: ${x.assignment.points}`)
+  ),
+  React.createElement('div', { className: 'committee-compact-members' },
+    x.assignment.members.map((m, i) => React.createElement('div', { key: i, className: 'committee-compact-member' },
+      React.createElement('span', { className: 'member-compact-number' }, i + 1),
+      React.createElement('span', { className: 'member-compact-name' }, m || '—')
+    ))
+  ),
+  !x.complete && React.createElement('div', { className: 'incomplete-badge' }, 'غير مكتملة')
+);
+
+  
   return React.createElement('div', { className: 'container' },
 
     // --- 3.5.2.1: رأس الصفحة والتبويبات ---
@@ -824,50 +857,123 @@ function CommitteeManager() {
     ),
 
     // --- 3.5.5: محتوى تبويب "تقرير التشكيل" ---
-    // يتم عرض هذا الجزء فقط إذا كان `activeTab` هو `formation`.
-    activeTab === 'formation' && React.createElement('div', { className: 'fade-in' },
-      React.createElement('div', { className: 'report-container' },
-        React.createElement('div', { className: 'report-header' },
-          React.createElement('h2', { className: 'report-title' }, '📊 تقرير تشكيل اللجان'),
-          React.createElement('button', { onClick: handlePrint, className: 'print-button' }, '🖨️ طباعة التقرير')
-        ),
+// يتم عرض هذا الجزء فقط إذا كان `activeTab` هو `formation`.
+activeTab === 'formation' && (() => {
+  // --- مشتقات حالة اللجان (قراءة فقط؛ لا تؤثر على الحفظ أو التوزيع) ---
+  const committeeStatus = assignments.map((a, idx) => ({
+    index: idx,
+    assignment: a,
+    committee: COMMITTEES[idx],
+    complete: (a.members.filter(m => m && m.trim()).length === a.memberCount)
+  }));
 
-        // المحتوى الذي سيتم طباعته
-        React.createElement('div', { className: 'report-content' },
-          React.createElement('h1', null, 'تقرير تشكيل اللجان'),
-          React.createElement('p', null, 'للعام الجامعي 1446هـ'),
-          React.createElement('p', { style: { fontSize: '0.9em', color: '#999' } },
-            `تاريخ الإصدار: ${new Date().toLocaleDateString('ar-SA')}`
-          ),
+  const completedCommittees   = committeeStatus.filter(x => x.complete);
+  const incompleteCommittees  = committeeStatus.filter(x => !x.complete);
 
-          // شبكة الإحصاءات السريعة
-          React.createElement('div', { className: 'stats-grid' },
-            React.createElement('div', { className: 'stat-box' },
-              React.createElement('div', { className: 'stat-number' }, COMMITTEES.length),
-              React.createElement('div', { className: 'stat-label' }, 'إجمالي اللجان')
-            ),
-            React.createElement('div', { className: 'stat-box green' },
-              React.createElement('div', { className: 'stat-number' },
-                getMemberStats().filter(m => getMemberLevel(m.points)?.name === 'مستوفى').length
-              ),
-              React.createElement('div', { className: 'stat-label' }, 'مستوفى (8+)')
-            ),
-            React.createElement('div', { className: 'stat-box blue' },
-              React.createElement('div', { className: 'stat-number' },
-                getMemberStats().filter(m => getMemberLevel(m.points)?.name === 'متقدم').length
-              ),
-              React.createElement('div', { className: 'stat-label' }, 'متقدم (10+)')
-            ),
-            React.createElement('div', { className: 'stat-box purple' },
-              React.createElement('div', { className: 'stat-number' },
-                getMemberStats().filter(m => getMemberLevel(m.points)?.name === 'متميز').length
-              ),
-              React.createElement('div', { className: 'stat-label' }, 'متميز (16+)')
-            )
-          )
+  // مولد بطاقة لجنة موجزة
+  const renderCompactCard = (x) => React.createElement(
+    'div',
+    { key: x.index, className: `committee-card-compact ${x.complete ? 'complete' : 'incomplete'}` },
+
+    React.createElement('div', { className: 'committee-compact-header' },
+      React.createElement('div', { className: 'committee-compact-name' }, x.committee.name),
+      React.createElement('div', { className: 'committee-compact-points' }, `النقاط: ${x.assignment.points}`)
+    ),
+
+    React.createElement('div', { className: 'committee-compact-members' },
+      x.assignment.members.map((m, i) =>
+        React.createElement('div', { key: i, className: 'committee-compact-member' },
+          React.createElement('span', { className: 'member-compact-number' }, i + 1),
+          React.createElement('span', { className: 'member-compact-name' }, m || '—')
         )
       )
     ),
+
+    !x.complete && React.createElement('div', { className: 'incomplete-badge' }, 'غير مكتملة')
+  );
+
+  // --- الإرجاع ---
+  return React.createElement('div', { className: 'fade-in' },
+    React.createElement('div', { className: 'report-container' },
+
+      React.createElement('div', { className: 'report-header' },
+        React.createElement('h2', { className: 'report-title' }, '📊 تقرير تشكيل اللجان'),
+        React.createElement('button', { onClick: handlePrint, className: 'print-button' }, '🖨️ طباعة التقرير')
+      ),
+
+      // المحتوى الذي سيتم طباعته
+      React.createElement('div', { className: 'report-content' },
+        React.createElement('h1', null, 'تقرير تشكيل اللجان'),
+        React.createElement('p', null, 'للعام الجامعي 1446هـ'),
+        React.createElement('p', { style: { fontSize: '0.9em', color: '#999' } },
+          `تاريخ الإصدار: ${new Date().toLocaleDateString('ar-SA')}`
+        ),
+
+        // شبكة الإحصاءات السريعة (كما هي)
+        React.createElement('div', { className: 'stats-grid' },
+          React.createElement('div', { className: 'stat-box' },
+            React.createElement('div', { className: 'stat-number' }, COMMITTEES.length),
+            React.createElement('div', { className: 'stat-label' }, 'إجمالي اللجان')
+          ),
+          React.createElement('div', { className: 'stat-box green' },
+            React.createElement('div', { className: 'stat-number' },
+              getMemberStats().filter(m => getMemberLevel(m.points)?.name === 'مستوفى').length
+            ),
+            React.createElement('div', { className: 'stat-label' }, 'مستوفى (8+)')
+          ),
+          React.createElement('div', { className: 'stat-box blue' },
+            React.createElement('div', { className: 'stat-number' },
+              getMemberStats().filter(m => getMemberLevel(m.points)?.name === 'متقدم').length
+            ),
+            React.createElement('div', { className: 'stat-label' }, 'متقدم (10+)')
+          ),
+          React.createElement('div', { className: 'stat-box purple' },
+            React.createElement('div', { className: 'stat-number' },
+              getMemberStats().filter(m => getMemberLevel(m.points)?.name === 'متميز').length
+            ),
+            React.createElement('div', { className: 'stat-label' }, 'متميز (16+)')
+          )
+        ),
+
+        // ملخص سريع لحالة اللجان
+        React.createElement('div', { className: 'stats-summary' },
+          React.createElement('h3', null, 'ملخص اللجان'),
+          React.createElement('div', { className: 'stats-grid' },
+            React.createElement('div', { className: 'stat-box blue' },
+              React.createElement('div', { className: 'stat-number' }, committeeStatus.length),
+              React.createElement('div', { className: 'stat-label' }, 'إجمالي اللجان')
+            ),
+            React.createElement('div', { className: 'stat-box green' },
+              React.createElement('div', { className: 'stat-number' }, completedCommittees.length),
+              React.createElement('div', { className: 'stat-label' }, 'لجان مكتملة')
+            ),
+            React.createElement('div', { className: 'stat-box orange' },
+              React.createElement('div', { className: 'stat-number' }, incompleteCommittees.length),
+              React.createElement('div', { className: 'stat-label' }, 'لجان غير مكتملة')
+            )
+          )
+        ),
+
+        // اللجان المكتملة
+        React.createElement('h3', { className: 'report-title', style: { fontSize: '1.3em', marginTop: 10 } }, 'اللجان المكتملة'),
+        React.createElement('div', { className: 'committees-compact-grid' },
+          completedCommittees.length
+            ? completedCommittees.map(renderCompactCard)
+            : React.createElement('div', { className: 'no-committees' }, 'لا توجد لجان مكتملة حتى الآن')
+        ),
+
+        // اللجان غير المكتملة
+        React.createElement('h3', { className: 'report-title', style: { fontSize: '1.3em', marginTop: 20 } }, 'اللجان غير المكتملة'),
+        React.createElement('div', { className: 'committees-compact-grid' },
+          incompleteCommittees.length
+            ? incompleteCommittees.map(renderCompactCard)
+            : React.createElement('div', { className: 'no-committees' }, 'لا توجد لجان غير مكتملة')
+        )
+      )
+    )
+  );
+})(),
+
 
     // --- 3.5.6: محتوى تبويب "تفاصيل اللجان" ---
     // يتم عرض هذا الجزء فقط إذا كان `activeTab` هو `details`.
